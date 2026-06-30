@@ -16,7 +16,7 @@ func _ready():
 		var h_type = GameManager.players[GameManager.local_player_id].hero_type
 		_hero_speed = HeroDatabase.get_hero(h_type).base_spd
 
-func _unhandled_input(event):
+func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		_move_to_mouse()
 
