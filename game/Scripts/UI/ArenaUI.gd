@@ -67,7 +67,6 @@ func _setup_wave_manager():
 	_wave_manager.arena_view = arena_view
 	_wave_manager.hero_node = hero_rect
 	_wave_manager.hero_data = GameManager.players.get(GameManager.local_player_id)
-	_wave_manager.all_monsters_died.connect(_on_wave_cleared)
 	_wave_manager.monster_spawned.connect(_on_monster_spawned)
 	add_child(_wave_manager)
 	
@@ -141,7 +140,8 @@ func _combat_tick(delta):
 	_atk_cooldown -= delta
 	_monsters_in_range.clear()
 	
-	for m in _wave_manager.monsters:
+	var snapshot = _wave_manager.monsters.duplicate()
+	for m in snapshot:
 		if not is_instance_valid(m) or not m._alive:
 			continue
 		var dist = hero_rect.position.distance_to(m.position)
@@ -164,6 +164,13 @@ func _combat_tick(delta):
 			p.add_xp(nearest.xp_reward)
 			_max_hp = p.get_hp()
 			_max_mana = p.get_mana()
+	
+	var alive_monsters = 0
+	for m in _wave_manager.monsters:
+		if is_instance_valid(m) and m._alive:
+			alive_monsters += 1
+	if alive_monsters == 0 and snapshot.size() > 0:
+		_on_wave_cleared(0, 0)
 
 func _on_wave_cleared(_g: int, _x: int):
 	GameManager.on_wave_cleared(GameManager.local_player_id)

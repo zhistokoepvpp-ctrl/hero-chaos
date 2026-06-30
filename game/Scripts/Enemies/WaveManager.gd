@@ -6,8 +6,7 @@ var hero_node: Node = null
 var hero_data = null
 var monsters: Array = []
 
-signal all_monsters_died(gold: int, xp: int)
-signal monster_spawned(monster: MonsterBase)
+	signal monster_spawned(monster: MonsterBase)
 
 func _ready():
 	pass
@@ -22,7 +21,6 @@ func spawn_wave(wave_number: int):
 		var data = _get_monster_stats(t, wave_number)
 		var m = MonsterBase.new(data)
 		m.set_target(hero_node, hero_data)
-		m.died.connect(_on_monster_died)
 		m.position = _get_spawn_position()
 		
 		if arena_view:
@@ -46,7 +44,6 @@ func _spawn_boss(wave_number: int):
 	
 	var boss = MonsterBase.new(data)
 	boss.set_target(hero_node, hero_data)
-	boss.died.connect(_on_monster_died)
 	boss.position = _get_spawn_position()
 	
 	if arena_view:
@@ -54,12 +51,6 @@ func _spawn_boss(wave_number: int):
 	
 	monsters.append(boss)
 	monster_spawned.emit(boss)
-
-func _on_monster_died(gold: int, xp: int, pos: Vector2):
-	monsters = monsters.filter(func(m): return is_instance_valid(m) and m._alive)
-	
-	if monsters.is_empty():
-		all_monsters_died.emit(0, 0)
 
 func _clear_monsters():
 	for m in monsters:
