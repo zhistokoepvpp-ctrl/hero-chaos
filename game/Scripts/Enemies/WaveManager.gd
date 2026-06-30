@@ -2,7 +2,7 @@ extends Node
 class_name WaveManager
 
 var arena_view: Node2D = null
-var hero_node: Node2D = null
+var hero_node: Node = null
 var hero_data = null
 var monsters: Array = []
 

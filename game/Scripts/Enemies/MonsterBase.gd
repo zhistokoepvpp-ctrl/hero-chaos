@@ -12,7 +12,7 @@ var gold_reward: int = 10
 var xp_reward: int = 20
 var monster_type: String = "slime"
 
-var _target: Node2D = null
+var _target = null
 var _target_player_data = null
 var _atk_timer: float = 0.0
 var _alive: bool = true
@@ -69,7 +69,7 @@ func _die():
 	died.emit(gold_reward, xp_reward, position)
 	queue_free()
 
-func set_target(node: Node2D, player_data):
+func set_target(node, player_data):
 	_target = node
 	_target_player_data = player_data
 
