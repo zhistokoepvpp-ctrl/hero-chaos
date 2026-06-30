@@ -110,7 +110,7 @@ func _on_hero_death():
 		_ending = false; return
 	
 	p.lives -= 1
-	if p.lives <= 0:
+	if p.lives < 0:
 		GameManager.check_game_over()
 		_ending = false; return
 	
@@ -125,7 +125,7 @@ func _input(event):
 	if not (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed):
 		return
 	
-	var click_pos = event.position - arena_view.position
+	var click_pos = arena_view.to_local(get_global_mouse_position())
 	var hit_monster = _find_monster_at(click_pos)
 	if hit_monster:
 		_attacking_target = hit_monster
@@ -192,7 +192,7 @@ func _combat_tick(delta):
 			alive += 1
 	if alive == 0 and snap.size() > 0 and not _ending:
 		_ending = true
-		if is_inside_tree():
+		if is_inside_tree() and get_tree():
 			GameManager.on_wave_cleared(GameManager.local_player_id)
 			GameManager.start_lobby_phase()
 			get_tree().change_scene_to_file("res://Scenes/Lobby.tscn")
