@@ -62,7 +62,8 @@ func start_wave_phase():
 func on_player_ready(peer_id: int):
 	if peer_id not in _ready_players:
 		_ready_players.append(peer_id)
-	if _ready_players.size() >= get_active_player_count() and Constants.LOBBY_READY_SKIP:
+	var count = get_active_player_count()
+	if _ready_players.size() >= count and count >= 2:
 		if phase == Constants.GamePhase.LOBBY:
 			start_wave_phase()
 
