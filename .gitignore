@@ -1,0 +1,28 @@
+# Godot
+.godot/
+game/.godot/
+game/export/
+*.import
+*.translation
+*.backup
+
+# Python
+master-server/__pycache__/
+master-server/venv/
+*.pyc
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swo
+*.swp
+
+# Builds
+*.exe
+*.zip
+*.7z
