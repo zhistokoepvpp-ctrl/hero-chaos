@@ -59,9 +59,25 @@ func _process(delta):
 	if dist > attack_range:
 		var dir = (_target.position - position).normalized()
 		position += dir * speed * delta
-	elif _atk_timer <= 0:
+	
+	_separate(delta)
+	
+	if dist <= attack_range and _atk_timer <= 0:
 		_atk_timer = attack_cooldown
 		_attack_target()
+
+func _separate(delta):
+	var min_dist = 24.0
+	var parent = get_parent()
+	if not parent:
+		return
+	for child in parent.get_children():
+		if child == self or not (child is MonsterBase) or not child._alive:
+			continue
+		var diff = position - child.position
+		var d = diff.length()
+		if d < min_dist and d > 0.001:
+			position += diff.normalized() * (min_dist - d) * 0.5
 
 func _attack_target():
 	if not _target or not _alive:
