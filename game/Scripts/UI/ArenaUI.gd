@@ -72,8 +72,17 @@ func _setup_wave_manager():
 	
 	_wave_manager.spawn_wave(GameManager.current_wave)
 
+var _poison_timer: float = 0.0
+var _poison_active: bool = false
+
 func _on_monster_spawned(monster: MonsterBase):
 	monster.dealt_damage.connect(_on_monster_damage)
+	if monster.is_spitter:
+		monster.spitter_poison_applied.connect(_on_spitter_poison)
+
+func _on_spitter_poison():
+	_poison_active = true
+	_poison_timer = 4.0
 
 func _on_monster_damage(amount: float):
 	if _current_hp <= 0:
@@ -171,6 +180,27 @@ func _combat_tick(delta):
 			alive_monsters += 1
 	if alive_monsters == 0 and snapshot.size() > 0:
 		_on_wave_cleared(0, 0)
+	
+	if GameManager._overtime_active:
+		for m in _wave_manager.monsters:
+			if is_instance_valid(m) and m._alive:
+				var base_dmg = m.get_meta("base_dmg", m.damage)
+				var base_spd = m.get_meta("base_spd", m.speed)
+				m.set_meta("base_dmg", base_dmg)
+				m.set_meta("base_spd", base_spd)
+				var ot = GameManager._overtime_seconds
+				m.damage = base_dmg * (1.0 + ot * Constants.OVERTIME_DMG_PER_SEC)
+				m.speed = base_spd * (1.0 + ot * Constants.OVERTIME_SPD_PER_SEC)
+	
+	if _poison_active:
+		_poison_timer -= delta
+		_current_hp -= 3.0 * delta
+		if _poison_timer <= 0:
+			_poison_active = false
+		if _current_hp <= 0:
+			_current_hp = 0
+			_on_hero_death()
+			return
 
 func _on_wave_cleared(_g: int, _x: int):
 	GameManager.on_wave_cleared(GameManager.local_player_id)
@@ -190,8 +220,16 @@ func _update_hud(delta):
 	if GameManager._wave_timer > 0:
 		var t = int(GameManager._wave_timer)
 		timer_label.text = "%02d:%02d / 60" % [t / 60, t % 60]
+		timer_label.modulate = Color.WHITE
 	elif GameManager._overtime_active:
-		timer_label.text = "OVERTIME"
+		var ot = GameManager._overtime_seconds
+		timer_label.text = "OVERTIME %.1f" % ot
+		if ot < 10:
+			timer_label.modulate = Color(1, 1, 0.5)
+		elif ot < 20:
+			timer_label.modulate = Color(1, 0.7, 0.2)
+		else:
+			timer_label.modulate = Color(1, 0.2, 0.1)
 	
 	level_label.text = "Lv.%d" % p.level
 	gold_label.text = "%dg" % p.gold
