@@ -16,6 +16,7 @@ var _timer: float = Constants.HERO_SELECT_TIME
 func _ready():
 	btn_confirm.pressed.connect(_on_confirm)
 	GameManager.phase = Constants.GamePhase.HERO_SELECT
+	GameManager._register_local_player()
 	_populate_grid()
 
 func _process(delta):
