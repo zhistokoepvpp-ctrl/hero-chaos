@@ -4,9 +4,9 @@ class_name WaveManager
 var arena_view: Node2D = null
 var hero_node: Node = null
 var hero_data = null
-var monsters: Array = []
+	var monsters: Array = []
 
-	signal monster_spawned(monster: MonsterBase)
+signal monster_spawned(monster: MonsterBase)
 
 func _ready():
 	pass
