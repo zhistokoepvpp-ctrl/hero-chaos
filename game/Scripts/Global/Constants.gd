@@ -20,7 +20,7 @@ const RESULTS_TIME := 5.0
 const RESPAWN_DELAY := 3.0
 const DISCONNECT_TIMEOUT := 15.0
 const RECONNECT_WINDOW := 180.0
-const LOBBY_READY_SKIP := true
+const LOBBY_READY_SKIP := false
 
 # ─── Network ───
 const DEFAULT_PORT := 25565
