@@ -28,8 +28,8 @@ func _on_host():
 	status.text = "Starting server..."
 	if NetworkManager.host_game():
 		status.text = "Server created! Waiting for players..."
-		GameManager.start_lobby_phase()
-		get_tree().change_scene_to_file("res://Scenes/Lobby.tscn")
+		GameManager.phase = Constants.GamePhase.HERO_SELECT
+		get_tree().change_scene_to_file("res://Scenes/HeroSelect.tscn")
 
 func _on_join_toggle():
 	ip_input.visible = not ip_input.visible
@@ -49,8 +49,8 @@ func _on_server_created():
 
 func _on_connected():
 	status.text = "Connected!"
-	GameManager.start_lobby_phase()
-	get_tree().change_scene_to_file("res://Scenes/Lobby.tscn")
+	GameManager.phase = Constants.GamePhase.HERO_SELECT
+	get_tree().change_scene_to_file("res://Scenes/HeroSelect.tscn")
 
 func _on_connection_failed():
 	status.text = "Connection failed! Check IP"

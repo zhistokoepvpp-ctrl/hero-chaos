@@ -1,0 +1,86 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/UI/HeroSelectUI.gd" id="1"]
+
+[node name="HeroSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+size = Vector2i(1280, 720)
+script = ExtResource("1")
+
+[node name="TitleLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 440
+offset_top = 20
+offset_right = 840
+offset_bottom = 60
+text = "SELECT YOUR HERO"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 24
+
+[node name="TimerLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 600
+offset_top = 70
+offset_right = 680
+offset_bottom = 110
+text = "30"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 28
+
+[node name="HeroGrid" type="GridContainer" parent="."]
+layout_mode = 0
+offset_left = 40
+offset_top = 130
+offset_right = 840
+offset_bottom = 610
+columns = 5
+
+[node name="InfoPanel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 860
+offset_top = 130
+offset_right = 1240
+offset_bottom = 610
+
+[node name="SelectedName" type="Label" parent="InfoPanel"]
+layout_mode = 0
+offset_left = 20
+offset_top = 20
+offset_right = 360
+offset_bottom = 60
+text = ""
+theme_override_font_sizes/font_size = 22
+
+[node name="SelectedRole" type="Label" parent="InfoPanel"]
+layout_mode = 0
+offset_left = 20
+offset_top = 70
+offset_right = 360
+offset_bottom = 100
+text = ""
+
+[node name="StatsLabel" type="Label" parent="InfoPanel"]
+layout_mode = 0
+offset_left = 20
+offset_top = 120
+offset_right = 360
+offset_bottom = 300
+text = ""
+
+[node name="AbilityLabel" type="Label" parent="InfoPanel"]
+layout_mode = 0
+offset_left = 20
+offset_top = 310
+offset_right = 360
+offset_bottom = 430
+text = ""
+theme_override_font_sizes/font_size = 14
+
+[node name="BtnConfirm" type="Button" parent="."]
+layout_mode = 0
+offset_left = 540
+offset_top = 640
+offset_right = 740
+offset_bottom = 690
+text = "CONFIRM"

@@ -32,13 +32,14 @@ text = "00:00 / 60"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 20
 
-[node name="HpBar" type="ColorRect" parent="."]
+[node name="LevelLabel" type="Label" parent="."]
 layout_mode = 0
-offset_left = 40
-offset_top = 680
-offset_right = 640
-offset_bottom = 700
-color = Color(0, 0.8, 0, 1)
+offset_left = 10
+offset_top = 5
+offset_right = 200
+offset_bottom = 30
+text = "Lv.1"
+theme_override_font_sizes/font_size = 16
 
 [node name="HpBg" type="ColorRect" parent="."]
 layout_mode = 0
@@ -47,4 +48,104 @@ offset_top = 680
 offset_right = 640
 offset_bottom = 700
 color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="ManaBg" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 40
+offset_top = 660
+offset_right = 640
+offset_bottom = 678
+color = Color(0.15, 0.15, 0.2, 1)
+
+[node name="HpBar" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 40
+offset_top = 680
+offset_right = 640
+offset_bottom = 700
+color = Color(0, 0.8, 0, 1)
+
+[node name="ManaBar" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 40
+offset_top = 660
+offset_right = 640
+offset_bottom = 678
+color = Color(0.1, 0.3, 0.9, 1)
+
+[node name="AbilityBox" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 880
+offset_top = 640
+offset_right = 1240
+offset_bottom = 710
+
+[node name="QPanel" type="Panel" parent="AbilityBox"]
+custom_minimum_size = Vector2i(80, 60)
+size = Vector2i(80, 60)
+
+[node name="QLabel" type="Label" parent="AbilityBox/QPanel"]
+layout_mode = 0
+offset_left = 5
+offset_top = 2
+offset_right = 75
+offset_bottom = 22
+text = "Q"
+theme_override_font_sizes/font_size = 10
+
+[node name="QCooldownBar" type="ColorRect" parent="AbilityBox/QPanel"]
+layout_mode = 0
+offset_left = 5
+offset_top = 22
+offset_right = 75
+offset_bottom = 58
+color = Color(0.2, 0.6, 0.9, 1)
+
+[node name="QCooldownBg" type="ColorRect" parent="AbilityBox/QPanel"]
+layout_mode = 0
+offset_left = 5
+offset_top = 22
+offset_right = 75
+offset_bottom = 58
+color = Color(0.1, 0.1, 0.1, 1)
 show_behind_parent = true
+
+[node name="WPanel" type="Panel" parent="AbilityBox"]
+custom_minimum_size = Vector2i(80, 60)
+size = Vector2i(80, 60)
+
+[node name="WLabel" type="Label" parent="AbilityBox/WPanel"]
+layout_mode = 0
+offset_left = 5
+offset_top = 2
+offset_right = 75
+offset_bottom = 22
+text = "W"
+theme_override_font_sizes/font_size = 10
+
+[node name="WCooldownBar" type="ColorRect" parent="AbilityBox/WPanel"]
+layout_mode = 0
+offset_left = 5
+offset_top = 22
+offset_right = 75
+offset_bottom = 58
+color = Color(0.9, 0.6, 0.1, 1)
+
+[node name="WCooldownBg" type="ColorRect" parent="AbilityBox/WPanel"]
+layout_mode = 0
+offset_left = 5
+offset_top = 22
+offset_right = 75
+offset_bottom = 58
+color = Color(0.1, 0.1, 0.1, 1)
+show_behind_parent = true
+
+[node name="GoldLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1180
+offset_top = 5
+offset_right = 1270
+offset_bottom = 30
+text = "200g"
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 16
