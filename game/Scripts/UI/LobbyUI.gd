@@ -16,6 +16,7 @@ func _process(delta):
 	if GameManager.phase == Constants.GamePhase.LOBBY:
 		var t = max(0, int(GameManager._lobby_timer))
 		timer_label.text = "%02d:%02d" % [t / 60, t % 60]
+		wave_label.text = "Wave: %d" % (GameManager.current_wave + 1)
 		_update_player_list()
 
 func _update_player_list():

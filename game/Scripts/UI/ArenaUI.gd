@@ -144,6 +144,17 @@ func _find_monster_at(pos: Vector2):
 				return m
 	return null
 
+func _find_nearest_monster():
+	var nearest = null
+	var min_dist = 999999.0
+	for m in _wave_manager.monsters:
+		if is_instance_valid(m) and m._alive:
+			var d = hero_rect.position.distance_to(m.position)
+			if d < min_dist:
+				min_dist = d
+				nearest = m
+	return nearest
+
 func _process(delta):
 	if Input.is_action_just_pressed("ability_q") and _hero:
 		_hero.ability_q()
@@ -183,9 +194,9 @@ func _combat_tick(delta):
 				p.add_xp(_attacking_target.xp_reward)
 				_max_hp = p.get_hp()
 				_max_mana = p.get_mana()
-				_attacking_target = null
+				_attacking_target = _find_nearest_monster()
 	else:
-		_attacking_target = null
+		_attacking_target = _find_nearest_monster() if not _is_moving else null
 	
 	var alive = 0
 	var snap = _wave_manager.monsters.duplicate()
