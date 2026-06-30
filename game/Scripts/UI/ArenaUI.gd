@@ -263,13 +263,32 @@ func _update_hud(delta):
 		w_cooldown_bar.size.x = w_cooldown_bg.size.x * _hero.get_w_progress()
 
 func _set_attack_target(monster):
-	if _prev_target and is_instance_valid(_prev_target):
-		_prev_target.modulate = Color.WHITE
+	_clear_target_highlight()
 	_attacking_target = monster
 	_prev_target = monster
 	if monster:
 		_attacking_target_last_pos = monster.position
-		monster.modulate = Color.YELLOW
+		_apply_target_highlight(monster)
+
+func _apply_target_highlight(monster):
+	if not is_instance_valid(monster):
+		return
+	var ring = ColorRect.new()
+	ring.name = "TargetRing"
+	ring.size = Vector2(30, 30)
+	ring.position = Vector2(-15, -15)
+	ring.color = Color(1, 1, 0, 0.4)
+	ring.mouse_filter = Control.MOUSE_FILTER_PASS
+	monster.add_child(ring)
+	monster.move_child(ring, 0)
+
+func _clear_target_highlight():
+	if _prev_target and is_instance_valid(_prev_target):
+		for child in _prev_target.get_children():
+			if child.name == "TargetRing":
+				_prev_target.remove_child(child)
+				child.queue_free()
+				break
 
 func _on_phase_changed(new_phase: int):
 	if new_phase == Constants.GamePhase.LOBBY:
