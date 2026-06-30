@@ -50,7 +50,7 @@ func _populate_grid():
 		var role_lbl = Label.new()
 		role_lbl.text = data.role
 		role_lbl.horizontal_alignment = 1
-		role_lbl.theme_override_font_sizes/font_size = 11
+		role_lbl.add_theme_font_size_override("font_size", 11)
 		vbox.add_child(role_lbl)
 		
 		card.add_child(vbox)
