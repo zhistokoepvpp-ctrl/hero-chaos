@@ -83,6 +83,12 @@ func get_active_player_count() -> int:
 			count += 1
 	return max(count, 1)
 
+func check_game_over():
+	var alive = get_active_player_count()
+	if alive <= 0:
+		phase = Constants.GamePhase.GAME_OVER
+		game_over.emit(local_player_id, [])
+
 func get_players_sorted_by_gold() -> Array:
 	var list = players.values()
 	list.sort_custom(func(a, b): return a.gold > b.gold)
