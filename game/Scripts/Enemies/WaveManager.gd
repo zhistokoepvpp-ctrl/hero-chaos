@@ -91,7 +91,7 @@ func _get_monster_stats(type: String, wave: int) -> Dictionary:
 		"slime": base_hp = 40; base_dmg = 5; base_spd = 60
 		"wolf": base_hp = 30; base_dmg = 8; base_spd = 120
 		"skeleton": base_hp = 60; base_dmg = 10; base_spd = 80
-		"golem": base_hp = 150; base_dmg = 15; base_spd = 40; base_spd = 40
+		"golem": base_hp = 150; base_dmg = 15; base_spd = 40
 		"ghost": base_hp = 35; base_dmg = 12; base_spd = 100
 		"demon": base_hp = 80; base_dmg = 18; base_spd = 90
 		"elemental": base_hp = 50; base_dmg = 14; base_spd = 70

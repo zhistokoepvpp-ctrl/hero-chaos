@@ -80,7 +80,7 @@ func _on_monster_damage(amount: float):
 	if _current_hp <= 0:
 		return
 	_current_hp -= amount
-		if _current_hp <= 0:
+	if _current_hp <= 0:
 			_current_hp = 0
 			_on_hero_death()
 			return
