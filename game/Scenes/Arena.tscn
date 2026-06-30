@@ -149,3 +149,13 @@ offset_bottom = 30
 text = "200g"
 horizontal_alignment = 2
 theme_override_font_sizes/font_size = 16
+
+[node name="WaveLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 540
+offset_top = 40
+offset_right = 740
+offset_bottom = 70
+text = "Wave 1"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 18
