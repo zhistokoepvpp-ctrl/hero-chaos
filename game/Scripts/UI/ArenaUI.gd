@@ -30,6 +30,7 @@ var _current_mana: float = 100.0
 var _atk_cooldown: float = 0.0
 var _atk_range: float = 150.0
 var _atk_damage: int = 30
+var _attacking_target_last_pos: Vector2 = Vector2.ZERO
 var _poison_timer: float = 0.0
 var _poison_active: bool = false
 var _ending: bool = false
@@ -125,21 +126,21 @@ func _input(event):
 	if not (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed):
 		return
 	
-	var click_pos = arena_view.to_local(get_global_mouse_position())
-	var hit_monster = _find_monster_at(click_pos)
+	var hit_monster = _find_monster_at(event.position)
 	if hit_monster:
 		_attacking_target = hit_monster
 		_is_moving = false
+		_attacking_target_last_pos = _attacking_target.position
 		return
 	
 	_attacking_target = null
-	_move_target = click_pos
+	_move_target = event.position
 	_is_moving = true
 
 func _find_monster_at(pos: Vector2):
 	for m in _wave_manager.monsters:
 		if is_instance_valid(m) and m._alive:
-			if m.position.distance_to(pos) < 30:
+			if m.position.distance_to(pos) < 50:
 				return m
 	return null
 
@@ -169,9 +170,10 @@ func _combat_tick(delta):
 	_atk_cooldown -= delta
 	
 	if _attacking_target and is_instance_valid(_attacking_target) and _attacking_target._alive:
-		var dist = hero_rect.position.distance_to(_attacking_target.position)
+		_attacking_target_last_pos = _attacking_target.position
+		var dist = hero_rect.position.distance_to(_attacking_target_last_pos)
 		if dist > _atk_range:
-			var dir = (_attacking_target.position - hero_rect.position).normalized()
+			var dir = (_attacking_target_last_pos - hero_rect.position).normalized()
 			hero_rect.position += dir * _hero_speed * delta
 		elif _atk_cooldown <= 0:
 			_atk_cooldown = 1.0 / _hero.player_data.get_atk_speed()
@@ -192,10 +194,11 @@ func _combat_tick(delta):
 			alive += 1
 	if alive == 0 and snap.size() > 0 and not _ending:
 		_ending = true
-		if is_inside_tree() and get_tree():
+		var tree = get_tree()
+		if tree:
 			GameManager.on_wave_cleared(GameManager.local_player_id)
 			GameManager.start_lobby_phase()
-			get_tree().change_scene_to_file("res://Scenes/Lobby.tscn")
+			tree.call_deferred("change_scene_to_file", "res://Scenes/Lobby.tscn")
 	
 	if GameManager._overtime_active:
 		var ot = GameManager._overtime_seconds
@@ -249,5 +252,7 @@ func _update_hud(delta):
 		w_cooldown_bar.size.x = w_cooldown_bg.size.x * _hero.get_w_progress()
 
 func _on_phase_changed(new_phase: int):
-	if new_phase == Constants.GamePhase.LOBBY and is_inside_tree():
-		get_tree().change_scene_to_file("res://Scenes/Lobby.tscn")
+	if new_phase == Constants.GamePhase.LOBBY:
+		var tree = get_tree()
+		if tree:
+			tree.call_deferred("change_scene_to_file", "res://Scenes/Lobby.tscn")
