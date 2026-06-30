@@ -74,6 +74,7 @@ func _setup_wave_manager():
 
 var _poison_timer: float = 0.0
 var _poison_active: bool = false
+var _wave_completing: bool = false
 
 func _on_monster_spawned(monster: MonsterBase):
 	monster.dealt_damage.connect(_on_monster_damage)
@@ -102,10 +103,10 @@ func _on_hero_death():
 	hero_rect.modulate = Color(0.3, 0.3, 0.3, 0.5)
 	set_process(false)
 
-	var timer = get_tree().create_timer(Constants.RESPAWN_DELAY)
-	await timer.timeout
+	var respawn = get_tree().create_timer(Constants.RESPAWN_DELAY)
+	await respawn.timeout
 	
-	if GameManager.phase != Constants.GamePhase.WAVE:
+	if not is_inside_tree() or GameManager.phase != Constants.GamePhase.WAVE:
 		return
 	
 	p.lives -= 1
@@ -178,7 +179,8 @@ func _combat_tick(delta):
 	for m in _wave_manager.monsters:
 		if is_instance_valid(m) and m._alive:
 			alive_monsters += 1
-	if alive_monsters == 0 and snapshot.size() > 0:
+	if alive_monsters == 0 and snapshot.size() > 0 and not _wave_completing:
+		_wave_completing = true
 		_on_wave_cleared(0, 0)
 	
 	if GameManager._overtime_active:
@@ -197,10 +199,10 @@ func _combat_tick(delta):
 		_current_hp -= 3.0 * delta
 		if _poison_timer <= 0:
 			_poison_active = false
-		if _current_hp <= 0:
-			_current_hp = 0
-			_on_hero_death()
-			return
+	if _current_hp <= 0:
+		_current_hp = 0
+		_on_hero_death()
+		return
 
 func _on_wave_cleared(_g: int, _x: int):
 	GameManager.on_wave_cleared(GameManager.local_player_id)
