@@ -12,12 +12,15 @@ var _hero_speed: float = 300.0
 
 func _ready():
 	GameManager.phase_changed.connect(_on_phase_changed)
-	_hero_speed = HeroDatabase.get_hero(GameManager.players[GameManager.local_player_id].hero_type).base_spd
+	if GameManager.players.has(GameManager.local_player_id):
+		var h_type = GameManager.players[GameManager.local_player_id].hero_type
+		_hero_speed = HeroDatabase.get_hero(h_type).base_spd
+
+func _unhandled_input(event):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		_move_to_mouse()
 
 func _process(delta):
-	if Input.is_mouse_button_just_pressed(MOUSE_BUTTON_RIGHT):
-		_move_to_mouse()
-	
 	if _is_moving:
 		var dir = (_move_target - hero.position)
 		if dir.length() > 4:

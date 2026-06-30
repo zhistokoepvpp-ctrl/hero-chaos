@@ -48,6 +48,7 @@ func start_lobby_phase():
 	_lobby_timer = Constants.LOBBY_TIME
 	_ready_players.clear()
 	_overtime_active = false
+	_register_local_player()
 
 func start_wave_phase():
 	current_wave += 1
@@ -68,6 +69,12 @@ func on_player_ready(peer_id: int):
 func on_wave_cleared(peer_id: int):
 	if peer_id not in _wave_cleared_players:
 		_wave_cleared_players.append(peer_id)
+
+func _register_local_player():
+	if not players.has(local_player_id):
+		var p = PlayerData.new(local_player_id, "Player" + str(local_player_id))
+		p.hero_type = Constants.HeroType.WARRIOR
+		players[local_player_id] = p
 
 func get_active_player_count() -> int:
 	var count = 0

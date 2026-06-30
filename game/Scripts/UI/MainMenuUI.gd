@@ -20,6 +20,9 @@ func _ready():
 	btn_connect.visible = false
 	
 	mmr_label.text = "MMR: " + str(DataManager.profile.get("mmr", 1000))
+	
+	$BtnSettings.pressed.connect(_on_settings)
+	$BtnQuit.pressed.connect(_on_quit)
 
 func _on_host():
 	status.text = "Starting server..."
@@ -31,7 +34,7 @@ func _on_host():
 func _on_join_toggle():
 	ip_input.visible = not ip_input.visible
 	btn_connect.visible = ip_input.visible
-	status.text = "Enter host IP address"
+	status.text = "Enter host IP address" if ip_input.visible else ""
 
 func _on_connect():
 	var ip = ip_input.text.strip_edges()
@@ -51,3 +54,9 @@ func _on_connected():
 
 func _on_connection_failed():
 	status.text = "Connection failed! Check IP"
+
+func _on_settings():
+	get_tree().change_scene_to_file("res://Scenes/Settings.tscn")
+
+func _on_quit():
+	get_tree().quit()
