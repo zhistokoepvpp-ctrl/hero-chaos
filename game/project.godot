@@ -6,7 +6,7 @@
 config/name="Hero Chaos"
 config/description="Multiplayer top-down arena survival with 8 players. Fight monsters, duel other players, be the last one standing."
 run/main_scene="res://Scenes/MainMenu.tscn"
-config/icon="res://icon.png"
+config/icon="res://icon.svg"
 boot_splash/bg_color=Color(0.1, 0.1, 0.2, 1)
 boot_splash/fullsize=true
 config/features=PackedStringArray("4.0")

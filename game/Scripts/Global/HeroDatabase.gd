@@ -26,7 +26,7 @@ func _register_heroes():
 		"attack_range": 500.0,
 		"description": "Дальний боец с высокой скоростью атаки. Q: град стрел. W: метка урона.",
 		"q_name": "Arrow Volley", "q_desc": "3 быстрые стрелы",
-		"w_name": "Mark", "q_desc": "Цель получает +25% урона"
+		"w_name": "Mark", "w_desc": "Цель получает +25% урона"
 	}
 	heroes[Constants.HeroType.MAGE] = {
 		"name": "Mage",
@@ -36,7 +36,8 @@ func _register_heroes():
 		"base_dmg": 20, "base_aspd": 0.9, "base_spd": 290.0,
 		"attack_range": 400.0,
 		"description": "Маг с мощными AoE-атаками. Q: огненный шар (взрыв). W: магический щит.",
-		"q_name": "Fireball", "w_name": "Arcane Barrier"
+		"q_name": "Fireball", "q_desc": "Огненный шар с AoE взрывом",
+		"w_name": "Arcane Barrier", "w_desc": "Магический щит, поглощающий урон"
 	}
 	heroes[Constants.HeroType.ASSASSIN] = {
 		"name": "Assassin",
@@ -44,7 +45,10 @@ func _register_heroes():
 		"primary": Constants.AttrType.AGI,
 		"base_str": 14, "base_agi": 28, "base_int": 8,
 		"base_dmg": 28, "base_aspd": 1.3, "base_spd": 330.0,
-		"attack_range": 150.0
+		"attack_range": 150.0,
+		"description": "Скрытный убийца с высоким критом. Q: рывок в тени. W: яд.",
+		"q_name": "Shadow Strike", "q_desc": "Рывок к цели с крит. ударом",
+		"w_name": "Poison Blade", "w_desc": "Отравляет цель, нанося периодический урон"
 	}
 	heroes[Constants.HeroType.PALADIN] = {
 		"name": "Paladin",
@@ -52,7 +56,10 @@ func _register_heroes():
 		"primary": Constants.AttrType.STR,
 		"base_str": 26, "base_agi": 10, "base_int": 14,
 		"base_dmg": 28, "base_aspd": 0.95, "base_spd": 295.0,
-		"attack_range": 150.0
+		"attack_range": 150.0,
+		"description": "Святой рыцарь с лечением и баффами. Q: исцеление. W: благословение.",
+		"q_name": "Holy Light", "q_desc": "Исцеляет союзника или себя",
+		"w_name": "Blessing", "w_desc": "Повышает броню и регенерацию"
 	}
 	heroes[Constants.HeroType.NECROMANCER] = {
 		"name": "Necromancer",
@@ -60,7 +67,10 @@ func _register_heroes():
 		"primary": Constants.AttrType.INT,
 		"base_str": 14, "base_agi": 8, "base_int": 28,
 		"base_dmg": 18, "base_aspd": 0.9, "base_spd": 295.0,
-		"attack_range": 400.0
+		"attack_range": 400.0,
+		"description": "Некромант, призывающий скелетов. Q: призыв скелета. W: порча.",
+		"q_name": "Summon Skeleton", "q_desc": "Призывает скелета-воина на 10 сек",
+		"w_name": "Curse", "w_desc": "Проклинает врага, снижая его броню"
 	}
 	heroes[Constants.HeroType.BERSERKER] = {
 		"name": "Berserker",
@@ -68,7 +78,10 @@ func _register_heroes():
 		"primary": Constants.AttrType.STR,
 		"base_str": 26, "base_agi": 14, "base_int": 10,
 		"base_dmg": 32, "base_aspd": 1.1, "base_spd": 320.0,
-		"attack_range": 150.0
+		"attack_range": 150.0,
+		"description": "Берсерк с бешенством. Q: топот (AoE станы). W: берсерк (+скорость).",
+		"q_name": "Stomp", "q_desc": "Топот, оглушающий врагов в радиусе",
+		"w_name": "Berserk", "w_desc": "Увеличивает скорость атаки и передвижения"
 	}
 	heroes[Constants.HeroType.SHAMAN] = {
 		"name": "Shaman",
@@ -76,7 +89,10 @@ func _register_heroes():
 		"primary": Constants.AttrType.INT,
 		"base_str": 14, "base_agi": 10, "base_int": 26,
 		"base_dmg": 20, "base_aspd": 1.0, "base_spd": 305.0,
-		"attack_range": 450.0
+		"attack_range": 450.0,
+		"description": "Шаман с элементальной магией. Q: цепная молния. W: тотем исцеления.",
+		"q_name": "Chain Lightning", "q_desc": "Молния, прыгающая между врагами",
+		"w_name": "Healing Totem", "w_desc": "Ставит тотем, исцеляющий союзников"
 	}
 	heroes[Constants.HeroType.GUNSLINGER] = {
 		"name": "Gunslinger",
@@ -84,7 +100,10 @@ func _register_heroes():
 		"primary": Constants.AttrType.AGI,
 		"base_str": 12, "base_agi": 28, "base_int": 10,
 		"base_dmg": 24, "base_aspd": 1.1, "base_spd": 315.0,
-		"attack_range": 500.0
+		"attack_range": 500.0,
+		"description": "Стрелок с акробатикой. Q: быстрый выстрел. W: сальто рывок.",
+		"q_name": "Quick Shot", "q_desc": "Быстрый выстрел с повышенным критом",
+		"w_name": "Flip", "w_desc": "Рывок в направлении курсора"
 	}
 	heroes[Constants.HeroType.SPELLBLADE] = {
 		"name": "Spellblade",
@@ -92,7 +111,10 @@ func _register_heroes():
 		"primary": Constants.AttrType.INT,
 		"base_str": 18, "base_agi": 10, "base_int": 24,
 		"base_dmg": 22, "base_aspd": 1.0, "base_spd": 310.0,
-		"attack_range": 150.0
+		"attack_range": 150.0,
+		"description": "Маг-мечник с зачарованным клинком. Q: магический удар. W: телепорт.",
+		"q_name": "Magic Blade", "q_desc": "Удар с дополнительным магическим уроном",
+		"w_name": "Blink", "w_desc": "Телепортация на небольшое расстояние"
 	}
 
 func get_hero(type: int) -> Dictionary:
