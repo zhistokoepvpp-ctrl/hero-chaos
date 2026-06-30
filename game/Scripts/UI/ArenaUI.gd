@@ -31,6 +31,7 @@ var _atk_cooldown: float = 0.0
 var _atk_range: float = 150.0
 var _atk_damage: int = 30
 var _attacking_target_last_pos: Vector2 = Vector2.ZERO
+var _prev_target = null
 var _poison_timer: float = 0.0
 var _poison_active: bool = false
 var _ending: bool = false
@@ -128,12 +129,11 @@ func _input(event):
 	
 	var hit_monster = _find_monster_at(event.position)
 	if hit_monster:
-		_attacking_target = hit_monster
+		_set_attack_target(hit_monster)
 		_is_moving = false
-		_attacking_target_last_pos = _attacking_target.position
 		return
 	
-	_attacking_target = null
+	_set_attack_target(null)
 	_move_target = event.position
 	_is_moving = true
 
@@ -194,9 +194,9 @@ func _combat_tick(delta):
 				p.add_xp(_attacking_target.xp_reward)
 				_max_hp = p.get_hp()
 				_max_mana = p.get_mana()
-				_attacking_target = _find_nearest_monster()
+				_set_attack_target(_find_nearest_monster())
 	else:
-		_attacking_target = _find_nearest_monster() if not _is_moving else null
+		_attacking_target = null
 	
 	var alive = 0
 	var snap = _wave_manager.monsters.duplicate()
@@ -261,6 +261,15 @@ func _update_hud(delta):
 	if _hero:
 		q_cooldown_bar.size.x = q_cooldown_bg.size.x * _hero.get_q_progress()
 		w_cooldown_bar.size.x = w_cooldown_bg.size.x * _hero.get_w_progress()
+
+func _set_attack_target(monster):
+	if _prev_target and is_instance_valid(_prev_target):
+		_prev_target.modulate = Color.WHITE
+	_attacking_target = monster
+	_prev_target = monster
+	if monster:
+		_attacking_target_last_pos = monster.position
+		monster.modulate = Color.YELLOW
 
 func _on_phase_changed(new_phase: int):
 	if new_phase == Constants.GamePhase.LOBBY:
