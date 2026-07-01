@@ -278,7 +278,6 @@ func _create_shop_tooltip():
 	_shop_tooltip_label.add_theme_color_override("font_color", Color.WHITE)
 	_shop_tooltip_label.add_theme_font_size_override("font_size", 12)
 	_shop_tooltip_label.autowrap_mode = TextServer.AUTOWRAP_WORD
-	_shop_tooltip_label.bbcode_enabled = true
 	_shop_tooltip.add_child(_shop_tooltip_label)
 	shop_panel.add_child(_shop_tooltip)
 
