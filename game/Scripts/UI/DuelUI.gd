@@ -93,6 +93,8 @@ func _setup_hero():
 	_hero_speed = p.get_speed()
 	var data = HeroDatabase.get_hero(h_type)
 	_hero_atk_range = data.attack_range
+	q_label.text = "[Q] " + data.get("q_name", "?")
+	w_label.text = "[W] " + data.get("w_name", "?")
 
 func _get_hero_color(h_type: int) -> Color:
 	match h_type:
