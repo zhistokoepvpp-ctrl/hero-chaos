@@ -83,6 +83,7 @@ func _setup_hero():
 	if HeroScript:
 		_hero = HeroScript.new()
 		_hero.player_data = p
+		arena_view.add_child(_hero)
 	_hero_max_hp = p.get_hp()
 	_hero_hp = _hero_max_hp
 	_hero_max_mana = p.get_mana()
@@ -188,10 +189,22 @@ func _set_attack_target(target):
 		_apply_target_highlight()
 
 func _apply_target_highlight():
-	enemy_rect.modulate = Color.YELLOW
+	var ring = ColorRect.new()
+	ring.name = "TargetRing"
+	ring.size = Vector2(38, 38)
+	ring.position = Vector2(-3, -3)
+	ring.color = Color(1, 1, 0, 0.4)
+	ring.mouse_filter = Control.MOUSE_FILTER_PASS
+	enemy_rect.add_child(ring)
+	enemy_rect.move_child(ring, 0)
 
 func _clear_target_highlight():
-	enemy_rect.modulate = Color.WHITE
+	if _prev_target == "enemy" and is_instance_valid(enemy_rect):
+		for child in enemy_rect.get_children():
+			if child.name == "TargetRing":
+				enemy_rect.remove_child(child)
+				child.queue_free()
+				break
 
 func _combat_tick(delta):
 	_atk_cooldown -= delta
