@@ -9,7 +9,8 @@ extends Control
 @onready var countdown_label: Label = $CountdownLabel
 @onready var timer_label: Label = $TimerLabel
 @onready var result_label: Label = $ResultLabel
-@onready var level_label: Label = $LevelLabel
+@onready var level_label: Label = $PortraitLevel
+@onready var portrait_rect: ColorRect = $PortraitRect
 @onready var lives_label: Label = $LivesLabel
 @onready var hp_bar: ColorRect = $HpBar
 @onready var mana_bar: ColorRect = $ManaBar
@@ -93,6 +94,7 @@ func _setup_hero():
 	_hero_speed = p.get_speed()
 	var data = HeroDatabase.get_hero(h_type)
 	_hero_atk_range = data.attack_range
+	portrait_rect.color = _get_hero_color(h_type)
 	q_label.text = "[Q] " + data.get("q_name", "?")
 	w_label.text = "[W] " + data.get("w_name", "?")
 

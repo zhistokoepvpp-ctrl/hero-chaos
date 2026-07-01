@@ -4,7 +4,8 @@ extends Control
 @onready var hero_rect: ColorRect = $ArenaView/Hero
 @onready var target_pos: ColorRect = $ArenaView/TargetPos
 @onready var timer_label: Label = $TimerLabel
-@onready var level_label: Label = $LevelLabel
+@onready var level_label: Label = $PortraitLevel
+@onready var portrait_rect: ColorRect = $PortraitRect
 @onready var hp_bar: ColorRect = $HpBar
 @onready var mana_bar: ColorRect = $ManaBar
 @onready var hp_bg: ColorRect = $HpBg
@@ -76,6 +77,7 @@ func _spawn_hero():
 	_current_hp = _max_hp
 	_max_mana = p.get_mana()
 	_current_mana = _max_mana
+	portrait_rect.color = _get_hero_portrait_color(h_type)
 	
 	q_label.text = "[Q] " + data.get("q_name", "?")
 	w_label.text = "[W] " + data.get("w_name", "?")
@@ -329,6 +331,20 @@ func _clear_target_highlight():
 				_prev_target.remove_child(child)
 				child.queue_free()
 				break
+
+func _get_hero_portrait_color(h_type: int) -> Color:
+	match h_type:
+		Constants.HeroType.WARRIOR: return Color(0.8, 0.3, 0.2)
+		Constants.HeroType.ARCHER: return Color(0.2, 0.6, 0.2)
+		Constants.HeroType.MAGE: return Color(0.2, 0.3, 0.8)
+		Constants.HeroType.ASSASSIN: return Color(0.3, 0.3, 0.3)
+		Constants.HeroType.PALADIN: return Color(0.9, 0.8, 0.4)
+		Constants.HeroType.NECROMANCER: return Color(0.4, 0.2, 0.6)
+		Constants.HeroType.BERSERKER: return Color(0.8, 0.1, 0.1)
+		Constants.HeroType.SHAMAN: return Color(0.2, 0.7, 0.7)
+		Constants.HeroType.GUNSLINGER: return Color(0.6, 0.5, 0.3)
+		Constants.HeroType.SPELLBLADE: return Color(0.5, 0.3, 0.8)
+	return Color(0.5, 0.5, 0.5)
 
 func _on_phase_changed(new_phase: int):
 	if new_phase == Constants.GamePhase.LOBBY:

@@ -43,131 +43,149 @@ text = "00:00 / 60"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 20
 
+[node name="PortraitRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 5
+offset_top = 615
+offset_right = 65
+offset_bottom = 675
+color = Color(0.15, 0.15, 0.2, 1)
+
+[node name="PortraitLevel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 5
+offset_top = 676
+offset_right = 65
+offset_bottom = 696
+text = "Lv.1"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 14
+
 [node name="LevelLabel" type="Label" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 10
 offset_top = 5
 offset_right = 200
 offset_bottom = 30
-text = "Lv.1"
+text = ""
 theme_override_font_sizes/font_size = 16
 
 [node name="LivesLabel" type="Label" parent="."]
 layout_mode = 0
-offset_left = 10
-offset_top = 30
+offset_left = 5
+offset_top = 580
 offset_right = 200
-offset_bottom = 55
+offset_bottom = 610
 text = "♥♥"
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 18
 
 [node name="HpBg" type="ColorRect" parent="."]
 layout_mode = 0
-offset_left = 40
-offset_top = 680
-offset_right = 640
-offset_bottom = 700
+offset_left = 70
+offset_top = 615
+offset_right = 490
+offset_bottom = 635
 color = Color(0.2, 0.2, 0.2, 1)
 
 [node name="ManaBg" type="ColorRect" parent="."]
 layout_mode = 0
-offset_left = 40
-offset_top = 660
-offset_right = 640
-offset_bottom = 678
+offset_left = 70
+offset_top = 637
+offset_right = 490
+offset_bottom = 653
 color = Color(0.15, 0.15, 0.2, 1)
 
 [node name="HpBar" type="ColorRect" parent="."]
 layout_mode = 0
-offset_left = 40
-offset_top = 680
-offset_right = 640
-offset_bottom = 700
+offset_left = 70
+offset_top = 615
+offset_right = 490
+offset_bottom = 635
 color = Color(0, 0.8, 0, 1)
 
 [node name="ManaBar" type="ColorRect" parent="."]
 layout_mode = 0
-offset_left = 40
-offset_top = 660
-offset_right = 640
-offset_bottom = 678
+offset_left = 70
+offset_top = 637
+offset_right = 490
+offset_bottom = 653
 color = Color(0.1, 0.3, 0.9, 1)
 
 [node name="AbilityBox" type="HBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 880
-offset_top = 640
-offset_right = 1240
-offset_bottom = 710
+offset_left = 70
+offset_top = 590
+offset_right = 210
+offset_bottom = 612
 
 [node name="QPanel" type="Panel" parent="AbilityBox"]
-custom_minimum_size = Vector2i(80, 60)
-size = Vector2i(80, 60)
+custom_minimum_size = Vector2i(56, 22)
+size = Vector2i(56, 22)
 
 [node name="QLabel" type="Label" parent="AbilityBox/QPanel"]
 layout_mode = 0
-offset_left = 5
-offset_top = 2
-offset_right = 75
-offset_bottom = 22
+offset_left = 2
+offset_top = 1
+offset_right = 54
+offset_bottom = 12
 text = "Q"
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 8
 
 [node name="QCooldownBar" type="ColorRect" parent="AbilityBox/QPanel"]
 layout_mode = 0
-offset_left = 5
-offset_top = 22
-offset_right = 75
-offset_bottom = 58
+offset_left = 2
+offset_top = 12
+offset_right = 54
+offset_bottom = 20
 color = Color(0.2, 0.6, 0.9, 1)
 
 [node name="QCooldownBg" type="ColorRect" parent="AbilityBox/QPanel"]
 layout_mode = 0
-offset_left = 5
-offset_top = 22
-offset_right = 75
-offset_bottom = 58
+offset_left = 2
+offset_top = 12
+offset_right = 54
+offset_bottom = 20
 color = Color(0.1, 0.1, 0.1, 1)
 show_behind_parent = true
 
 [node name="WPanel" type="Panel" parent="AbilityBox"]
-custom_minimum_size = Vector2i(80, 60)
-size = Vector2i(80, 60)
+custom_minimum_size = Vector2i(56, 22)
+size = Vector2i(56, 22)
 
 [node name="WLabel" type="Label" parent="AbilityBox/WPanel"]
 layout_mode = 0
-offset_left = 5
-offset_top = 2
-offset_right = 75
-offset_bottom = 22
+offset_left = 2
+offset_top = 1
+offset_right = 54
+offset_bottom = 12
 text = "W"
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 8
 
 [node name="WCooldownBar" type="ColorRect" parent="AbilityBox/WPanel"]
 layout_mode = 0
-offset_left = 5
-offset_top = 22
-offset_right = 75
-offset_bottom = 58
+offset_left = 2
+offset_top = 12
+offset_right = 54
+offset_bottom = 20
 color = Color(0.9, 0.6, 0.1, 1)
 
 [node name="WCooldownBg" type="ColorRect" parent="AbilityBox/WPanel"]
 layout_mode = 0
-offset_left = 5
-offset_top = 22
-offset_right = 75
-offset_bottom = 58
+offset_left = 2
+offset_top = 12
+offset_right = 54
+offset_bottom = 20
 color = Color(0.1, 0.1, 0.1, 1)
 show_behind_parent = true
 
 [node name="GoldLabel" type="Label" parent="."]
 layout_mode = 0
-offset_left = 1180
-offset_top = 5
-offset_right = 1270
-offset_bottom = 30
+offset_left = 800
+offset_top = 615
+offset_right = 900
+offset_bottom = 640
 text = "200g"
-horizontal_alignment = 2
 theme_override_font_sizes/font_size = 16
 
 [node name="NotifyLabel" type="Label" parent="."]
@@ -192,10 +210,10 @@ theme_override_font_sizes/font_size = 18
 
 [node name="InvBox" type="HBoxContainer" parent="."]
 layout_mode = 0
-offset_left = 40
-offset_top = 580
-offset_right = 640
-offset_bottom = 618
+offset_left = 540
+offset_top = 615
+offset_right = 790
+offset_bottom = 655
 
 [node name="Slot0" type="Panel" parent="InvBox"]
 custom_minimum_size = Vector2i(60, 36)
