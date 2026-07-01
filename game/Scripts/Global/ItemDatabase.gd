@@ -38,7 +38,15 @@ func _register_recipes():
 	recipes[110] = {"result": {"name": "Arcane Crown", "effects": {"abl_dmg": 40, "cooldown_reduction": 0.15, "mana_regen": 2}}, "components": [8, 11, 14], "combine_cost": 80}
 
 func get_item(item_id: int) -> Dictionary:
-	return items.get(item_id, {})
+	if items.has(item_id):
+		return items[item_id]
+	if recipes.has(item_id):
+		return recipes[item_id].result
+	return {}
+
+func get_item_name(item_id: int) -> String:
+	var item = get_item(item_id)
+	return item.get("name", "Item #%d" % item_id)
 
 func get_recipe(recipe_id: int) -> Dictionary:
 	return recipes.get(recipe_id, {})

@@ -25,6 +25,15 @@ extends Control
 @onready var attr_agi_btn: Button = $AttrPanel/AttrAgiBtn
 @onready var attr_int_btn: Button = $AttrPanel/AttrIntBtn
 
+@onready var lobby_inv_slots: Array = [
+	$LobbyInvBox/LSlot0/LSlot0Label,
+	$LobbyInvBox/LSlot1/LSlot1Label,
+	$LobbyInvBox/LSlot2/LSlot2Label,
+	$LobbyInvBox/LSlot3/LSlot3Label,
+	$LobbyInvBox/LSlot4/LSlot4Label,
+	$LobbyInvBox/LSlot5/LSlot5Label
+]
+
 var is_ready: bool = false
 var _move_target: Vector2 = Vector2.ZERO
 var _is_moving: bool = false
@@ -65,6 +74,7 @@ func _process(delta):
 		timer_label.text = "%02d:%02d" % [t / 60, t % 60]
 		wave_label.text = "Wave: %d" % (GameManager.current_wave + 1)
 		_update_player_list()
+		_update_inv_slots()
 	
 	if _is_moving and not shop_panel.visible and not attr_panel.visible:
 		var dir = (_move_target - hero_rect.position)
@@ -233,6 +243,18 @@ func _add_agi():
 	p.free_attr_points -= 1
 	p.agi_attr += 1
 	_refresh_attr()
+
+func _update_inv_slots():
+	var p = GameManager.players.get(GameManager.local_player_id)
+	if not p:
+		for i in range(6):
+			lobby_inv_slots[i].text = ""
+		return
+	for i in range(6):
+		if i < p.inventory.size():
+			lobby_inv_slots[i].text = ItemDatabase.get_item_name(p.inventory[i])
+		else:
+			lobby_inv_slots[i].text = ""
 
 func _add_int():
 	var p = GameManager.players.get(GameManager.local_player_id)

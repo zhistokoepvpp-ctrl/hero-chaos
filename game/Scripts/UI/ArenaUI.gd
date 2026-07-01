@@ -279,8 +279,7 @@ func _update_hud(delta):
 	
 	for i in range(6):
 		if i < p.inventory.size():
-			var item = ItemDatabase.get_item(p.inventory[i])
-			inv_slots[i].text = item.get("name", "") if not item.is_empty() else ""
+			inv_slots[i].text = ItemDatabase.get_item_name(p.inventory[i])
 		else:
 			inv_slots[i].text = ""
 

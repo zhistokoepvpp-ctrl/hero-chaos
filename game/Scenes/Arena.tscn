@@ -172,9 +172,9 @@ theme_override_font_sizes/font_size = 18
 [node name="InvBox" type="HBoxContainer" parent="."]
 layout_mode = 0
 offset_left = 40
-offset_top = 620
+offset_top = 580
 offset_right = 640
-offset_bottom = 660
+offset_bottom = 618
 
 [node name="Slot0" type="Panel" parent="InvBox"]
 custom_minimum_size = Vector2i(60, 36)

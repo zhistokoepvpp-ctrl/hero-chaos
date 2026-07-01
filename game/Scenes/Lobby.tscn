@@ -204,3 +204,114 @@ offset_top = 170
 offset_right = 260
 offset_bottom = 200
 text = "+"
+
+[node name="LobbyInvBox" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 40
+offset_top = 500
+offset_right = 640
+offset_bottom = 540
+
+[node name="LSlot0" type="Panel" parent="LobbyInvBox"]
+custom_minimum_size = Vector2i(60, 36)
+size = Vector2i(60, 36)
+color = Color(0.1, 0.1, 0.15, 0.8)
+
+[node name="LSlot0Label" type="Label" parent="LobbyInvBox/LSlot0"]
+layout_mode = 0
+offset_left = 2
+offset_top = 2
+offset_right = 58
+offset_bottom = 34
+text = ""
+theme_override_font_sizes/font_size = 10
+
+[node name="LSlot1" type="Panel" parent="LobbyInvBox"]
+layout_mode = 0
+offset_left = 70
+offset_top = 0
+offset_right = 130
+offset_bottom = 36
+custom_minimum_size = Vector2i(60, 36)
+color = Color(0.1, 0.1, 0.15, 0.8)
+
+[node name="LSlot1Label" type="Label" parent="LobbyInvBox/LSlot1"]
+layout_mode = 0
+offset_left = 2
+offset_top = 2
+offset_right = 58
+offset_bottom = 34
+text = ""
+theme_override_font_sizes/font_size = 10
+
+[node name="LSlot2" type="Panel" parent="LobbyInvBox"]
+layout_mode = 0
+offset_left = 140
+offset_top = 0
+offset_right = 200
+offset_bottom = 36
+custom_minimum_size = Vector2i(60, 36)
+color = Color(0.1, 0.1, 0.15, 0.8)
+
+[node name="LSlot2Label" type="Label" parent="LobbyInvBox/LSlot2"]
+layout_mode = 0
+offset_left = 2
+offset_top = 2
+offset_right = 58
+offset_bottom = 34
+text = ""
+theme_override_font_sizes/font_size = 10
+
+[node name="LSlot3" type="Panel" parent="LobbyInvBox"]
+layout_mode = 0
+offset_left = 210
+offset_top = 0
+offset_right = 270
+offset_bottom = 36
+custom_minimum_size = Vector2i(60, 36)
+color = Color(0.1, 0.1, 0.15, 0.8)
+
+[node name="LSlot3Label" type="Label" parent="LobbyInvBox/LSlot3"]
+layout_mode = 0
+offset_left = 2
+offset_top = 2
+offset_right = 58
+offset_bottom = 34
+text = ""
+theme_override_font_sizes/font_size = 10
+
+[node name="LSlot4" type="Panel" parent="LobbyInvBox"]
+layout_mode = 0
+offset_left = 280
+offset_top = 0
+offset_right = 340
+offset_bottom = 36
+custom_minimum_size = Vector2i(60, 36)
+color = Color(0.1, 0.1, 0.15, 0.8)
+
+[node name="LSlot4Label" type="Label" parent="LobbyInvBox/LSlot4"]
+layout_mode = 0
+offset_left = 2
+offset_top = 2
+offset_right = 58
+offset_bottom = 34
+text = ""
+theme_override_font_sizes/font_size = 10
+
+[node name="LSlot5" type="Panel" parent="LobbyInvBox"]
+layout_mode = 0
+offset_left = 350
+offset_top = 0
+offset_right = 410
+offset_bottom = 36
+custom_minimum_size = Vector2i(60, 36)
+color = Color(0.1, 0.1, 0.15, 0.8)
+
+[node name="LSlot5Label" type="Label" parent="LobbyInvBox/LSlot5"]
+layout_mode = 0
+offset_left = 2
+offset_top = 2
+offset_right = 58
+offset_bottom = 34
+text = ""
+theme_override_font_sizes/font_size = 10
