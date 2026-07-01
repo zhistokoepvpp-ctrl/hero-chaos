@@ -14,38 +14,38 @@ position = Vector2i(200, 310)
 size = Vector2i(32, 32)
 color = Color(0.2, 0.4, 0.8, 1)
 
+[node name="HeroHpBar" type="ColorRect" parent="ArenaView/HeroRect"]
+position = Vector2i(0, -10)
+size = Vector2i(32, 4)
+color = Color(0, 0.8, 0, 1)
+
+[node name="HeroHpBg" type="ColorRect" parent="ArenaView/HeroRect"]
+position = Vector2i(0, -10)
+size = Vector2i(32, 4)
+color = Color(0.2, 0.2, 0.2, 1)
+show_behind_parent = true
+
 [node name="EnemyRect" type="ColorRect" parent="ArenaView"]
 position = Vector2i(1080, 310)
 size = Vector2i(32, 32)
 color = Color(0.8, 0.2, 0.2, 1)
+
+[node name="EnemyHpBar" type="ColorRect" parent="ArenaView/EnemyRect"]
+position = Vector2i(0, -10)
+size = Vector2i(32, 4)
+color = Color(0, 0.8, 0, 1)
+
+[node name="EnemyHpBg" type="ColorRect" parent="ArenaView/EnemyRect"]
+position = Vector2i(0, -10)
+size = Vector2i(32, 4)
+color = Color(0.2, 0.2, 0.2, 1)
+show_behind_parent = true
 
 [node name="TargetPos" type="ColorRect" parent="ArenaView"]
 position = Vector2i(0, 0)
 size = Vector2i(8, 8)
 color = Color(0, 1, 0, 0.5)
 visible = false
-
-[node name="HeroHpBar" type="ColorRect" parent="ArenaView"]
-position = Vector2i(184, 290)
-size = Vector2i(64, 6)
-color = Color(0, 0.8, 0, 1)
-
-[node name="HeroHpBg" type="ColorRect" parent="ArenaView"]
-position = Vector2i(184, 290)
-size = Vector2i(64, 6)
-color = Color(0.2, 0.2, 0.2, 1)
-show_behind_parent = true
-
-[node name="EnemyHpBar" type="ColorRect" parent="ArenaView"]
-position = Vector2i(1064, 290)
-size = Vector2i(64, 6)
-color = Color(0, 0.8, 0, 1)
-
-[node name="EnemyHpBg" type="ColorRect" parent="ArenaView"]
-position = Vector2i(1064, 290)
-size = Vector2i(64, 6)
-color = Color(0.2, 0.2, 0.2, 1)
-show_behind_parent = true
 
 [node name="CountdownLabel" type="Label" parent="."]
 layout_mode = 0
@@ -60,12 +60,12 @@ theme_override_font_sizes/font_size = 48
 [node name="TimerLabel" type="Label" parent="."]
 layout_mode = 0
 offset_left = 540
-offset_top = 20
+offset_top = 10
 offset_right = 740
-offset_bottom = 60
-text = "60"
+offset_bottom = 40
+text = "00:00"
 horizontal_alignment = 1
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 20
 
 [node name="ResultLabel" type="Label" parent="."]
 visible = false
@@ -77,3 +77,241 @@ offset_bottom = 400
 text = ""
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 36
+
+[node name="LevelLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 10
+offset_top = 5
+offset_right = 200
+offset_bottom = 30
+text = "Lv.1"
+theme_override_font_sizes/font_size = 16
+
+[node name="LivesLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 10
+offset_top = 30
+offset_right = 200
+offset_bottom = 55
+text = "♥♥"
+theme_override_font_sizes/font_size = 16
+
+[node name="HpBg" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 40
+offset_top = 680
+offset_right = 640
+offset_bottom = 700
+color = Color(0.2, 0.2, 0.2, 1)
+
+[node name="ManaBg" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 40
+offset_top = 660
+offset_right = 640
+offset_bottom = 678
+color = Color(0.15, 0.15, 0.2, 1)
+
+[node name="HpBar" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 40
+offset_top = 680
+offset_right = 640
+offset_bottom = 700
+color = Color(0, 0.8, 0, 1)
+
+[node name="ManaBar" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 40
+offset_top = 660
+offset_right = 640
+offset_bottom = 678
+color = Color(0.1, 0.3, 0.9, 1)
+
+[node name="AbilityBox" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 880
+offset_top = 640
+offset_right = 1240
+offset_bottom = 710
+
+[node name="QPanel" type="Panel" parent="AbilityBox"]
+custom_minimum_size = Vector2i(80, 60)
+size = Vector2i(80, 60)
+
+[node name="QLabel" type="Label" parent="AbilityBox/QPanel"]
+layout_mode = 0
+offset_left = 5
+offset_top = 2
+offset_right = 75
+offset_bottom = 22
+text = "Q"
+theme_override_font_sizes/font_size = 10
+
+[node name="QCooldownBar" type="ColorRect" parent="AbilityBox/QPanel"]
+layout_mode = 0
+offset_left = 5
+offset_top = 22
+offset_right = 75
+offset_bottom = 58
+color = Color(0.2, 0.6, 0.9, 1)
+
+[node name="QCooldownBg" type="ColorRect" parent="AbilityBox/QPanel"]
+layout_mode = 0
+offset_left = 5
+offset_top = 22
+offset_right = 75
+offset_bottom = 58
+color = Color(0.1, 0.1, 0.1, 1)
+show_behind_parent = true
+
+[node name="WPanel" type="Panel" parent="AbilityBox"]
+custom_minimum_size = Vector2i(80, 60)
+size = Vector2i(80, 60)
+
+[node name="WLabel" type="Label" parent="AbilityBox/WPanel"]
+layout_mode = 0
+offset_left = 5
+offset_top = 2
+offset_right = 75
+offset_bottom = 22
+text = "W"
+theme_override_font_sizes/font_size = 10
+
+[node name="WCooldownBar" type="ColorRect" parent="AbilityBox/WPanel"]
+layout_mode = 0
+offset_left = 5
+offset_top = 22
+offset_right = 75
+offset_bottom = 58
+color = Color(0.9, 0.6, 0.1, 1)
+
+[node name="WCooldownBg" type="ColorRect" parent="AbilityBox/WPanel"]
+layout_mode = 0
+offset_left = 5
+offset_top = 22
+offset_right = 75
+offset_bottom = 58
+color = Color(0.1, 0.1, 0.1, 1)
+show_behind_parent = true
+
+[node name="GoldLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1180
+offset_top = 5
+offset_right = 1270
+offset_bottom = 30
+text = "200g"
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 16
+
+[node name="InvBox" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 40
+offset_top = 580
+offset_right = 640
+offset_bottom = 618
+
+[node name="Slot0" type="Panel" parent="InvBox"]
+custom_minimum_size = Vector2i(60, 36)
+size = Vector2i(60, 36)
+color = Color(0.1, 0.1, 0.15, 0.8)
+
+[node name="Slot0Label" type="Label" parent="InvBox/Slot0"]
+layout_mode = 0
+offset_left = 2
+offset_top = 2
+offset_right = 58
+offset_bottom = 34
+text = ""
+theme_override_font_sizes/font_size = 10
+
+[node name="Slot1" type="Panel" parent="InvBox"]
+layout_mode = 0
+offset_left = 70
+offset_top = 0
+offset_right = 130
+offset_bottom = 36
+custom_minimum_size = Vector2i(60, 36)
+color = Color(0.1, 0.1, 0.15, 0.8)
+
+[node name="Slot1Label" type="Label" parent="InvBox/Slot1"]
+layout_mode = 0
+offset_left = 2
+offset_top = 2
+offset_right = 58
+offset_bottom = 34
+text = ""
+theme_override_font_sizes/font_size = 10
+
+[node name="Slot2" type="Panel" parent="InvBox"]
+layout_mode = 0
+offset_left = 140
+offset_top = 0
+offset_right = 200
+offset_bottom = 36
+custom_minimum_size = Vector2i(60, 36)
+color = Color(0.1, 0.1, 0.15, 0.8)
+
+[node name="Slot2Label" type="Label" parent="InvBox/Slot2"]
+layout_mode = 0
+offset_left = 2
+offset_top = 2
+offset_right = 58
+offset_bottom = 34
+text = ""
+theme_override_font_sizes/font_size = 10
+
+[node name="Slot3" type="Panel" parent="InvBox"]
+layout_mode = 0
+offset_left = 210
+offset_top = 0
+offset_right = 270
+offset_bottom = 36
+custom_minimum_size = Vector2i(60, 36)
+color = Color(0.1, 0.1, 0.15, 0.8)
+
+[node name="Slot3Label" type="Label" parent="InvBox/Slot3"]
+layout_mode = 0
+offset_left = 2
+offset_top = 2
+offset_right = 58
+offset_bottom = 34
+text = ""
+theme_override_font_sizes/font_size = 10
+
+[node name="Slot4" type="Panel" parent="InvBox"]
+layout_mode = 0
+offset_left = 280
+offset_top = 0
+offset_right = 340
+offset_bottom = 36
+custom_minimum_size = Vector2i(60, 36)
+color = Color(0.1, 0.1, 0.15, 0.8)
+
+[node name="Slot4Label" type="Label" parent="InvBox/Slot4"]
+layout_mode = 0
+offset_left = 2
+offset_top = 2
+offset_right = 58
+offset_bottom = 34
+text = ""
+theme_override_font_sizes/font_size = 10
+
+[node name="Slot5" type="Panel" parent="InvBox"]
+layout_mode = 0
+offset_left = 350
+offset_top = 0
+offset_right = 410
+offset_bottom = 36
+custom_minimum_size = Vector2i(60, 36)
+color = Color(0.1, 0.1, 0.15, 0.8)
+
+[node name="Slot5Label" type="Label" parent="InvBox/Slot5"]
+layout_mode = 0
+offset_left = 2
+offset_top = 2
+offset_right = 58
+offset_bottom = 34
+text = ""
+theme_override_font_sizes/font_size = 10
