@@ -174,12 +174,25 @@ func _spawn_hero():
 			w_label.text = "[%s] %s" % [_action_key_name(w_action), data.get("w_name", "?")]
 
 func _action_key_name(action: String) -> String:
-	if not InputMap.has_action(action):
-		return "?"
-	var events = InputMap.action_get_events(action)
-	if events.size() > 0 and events[0] is InputEventKey:
-		return OS.get_keycode_string(events[0].keycode)
-	return "?"
+	if InputMap.has_action(action):
+		var events = InputMap.action_get_events(action)
+		if events.size() > 0 and events[0] is InputEventKey:
+			var name = OS.get_keycode_string(events[0].keycode)
+			if name:
+				return name
+	var defaults = {
+		"ability_q": "Q", "ability_w": "W", "ability_e": "E",
+		"item_1": "1", "item_2": "2", "item_3": "3",
+		"item_4": "4", "item_5": "5", "item_6": "6",
+		"shop": "B", "attr": "U"
+	}
+	var saved = AudioManager._read_settings().get("keybinds", {})
+	var keycode = saved.get(action, 0)
+	if keycode > 0:
+		var name = OS.get_keycode_string(keycode)
+		if name:
+			return name
+	return defaults.get(action, "?")
 
 func _get_hero_color(h_type: int) -> Color:
 	match h_type:
