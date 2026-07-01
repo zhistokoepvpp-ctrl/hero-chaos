@@ -1,12 +1,14 @@
 extends Control
 
-var _bind_actions := ["ability_q", "ability_w", "ability_e", "item_1", "item_2", "item_3", "item_4", "item_5", "item_6"]
+var _bind_actions := ["ability_q", "ability_w", "ability_e", "item_1", "item_2", "item_3", "item_4", "item_5", "item_6", "shop", "attr"]
 var _bind_labels: Array = []
+var _current_bind_actions: Array = []
 var _waiting_for_key: String = ""
 var _bind_names := {
-	"ability_q": "Skill 1", "ability_w": "Skill 2 (Click)", "ability_e": "Skill 2 (WASD)",
+	"ability_q": "Skill 1", "ability_w": "Skill 2", "ability_e": "Skill 2",
 	"item_1": "Item Slot 1", "item_2": "Item Slot 2", "item_3": "Item Slot 3",
-	"item_4": "Item Slot 4", "item_5": "Item Slot 5", "item_6": "Item Slot 6"
+	"item_4": "Item Slot 4", "item_5": "Item Slot 5", "item_6": "Item Slot 6",
+	"shop": "Shop", "attr": "Attributes"
 }
 
 func _ready():
@@ -28,6 +30,7 @@ func _ready():
 
 	var scheme = AudioManager.get_setting("control_scheme", "click")
 	_highlight_panel(scheme)
+	_update_preset_labels()
 
 	$MasterVolSlider.value_changed.connect(_on_master_vol_changed)
 	$SfxVolSlider.value_changed.connect(_on_sfx_vol_changed)
@@ -50,6 +53,7 @@ func _populate_bind_list():
 	for c in list.get_children():
 		c.queue_free()
 	_bind_labels.clear()
+	_current_bind_actions.clear()
 	var binds = AudioManager._read_settings().get("keybinds", {})
 	var scheme = AudioManager.get_setting("control_scheme", "click")
 	var actions = _bind_actions.duplicate()
@@ -57,6 +61,7 @@ func _populate_bind_list():
 		actions.erase("ability_w")
 	else:
 		actions.erase("ability_e")
+	_current_bind_actions = actions.duplicate()
 	for action in actions:
 		var hb = HBoxContainer.new()
 		var name_lbl = Label.new()
@@ -80,7 +85,8 @@ func _default_key(action: String) -> int:
 	var defaults = {
 		"ability_q": KEY_Q, "ability_w": KEY_W, "ability_e": KEY_E,
 		"item_1": KEY_1, "item_2": KEY_2, "item_3": KEY_3,
-		"item_4": KEY_4, "item_5": KEY_5, "item_6": KEY_6
+		"item_4": KEY_4, "item_5": KEY_5, "item_6": KEY_6,
+		"shop": KEY_B, "attr": KEY_U
 	}
 	return defaults.get(action, 0)
 
@@ -89,7 +95,8 @@ func _key_name(keycode: int) -> String:
 		return "?"
 	var names = {
 		KEY_Q: "Q", KEY_W: "W", KEY_E: "E", KEY_R: "R",
-		KEY_1: "1", KEY_2: "2", KEY_3: "3", KEY_4: "4", KEY_5: "5", KEY_6: "6"
+		KEY_1: "1", KEY_2: "2", KEY_3: "3", KEY_4: "4", KEY_5: "5", KEY_6: "6",
+		KEY_B: "B", KEY_U: "U"
 	}
 	return names.get(keycode, "?")
 
@@ -112,6 +119,7 @@ func _input(event):
 			var data = AudioManager._read_settings()
 			data["control_scheme"] = scheme
 			AudioManager._write_settings(data)
+			_update_preset_labels()
 	
 	if _waiting_for_key and event is InputEventKey and event.pressed:
 		var keycode = event.keycode
@@ -135,15 +143,17 @@ func _apply_bind(action: String, keycode: int):
 	var ev = InputEventKey.new()
 	ev.keycode = keycode
 	InputMap.action_add_event(action, ev)
+	_update_preset_labels()
 
 func _rebuild_labels():
 	var binds = AudioManager._read_settings().get("keybinds", {})
 	for i in _bind_labels.size():
-		var action = _bind_actions[i]
-		if i < _bind_labels.size():
-			var keycode = binds.get(action, _default_key(action))
-			_bind_labels[i].text = _key_name(keycode)
-			_bind_labels[i].add_theme_color_override("font_color", Color.WHITE)
+		if i >= _current_bind_actions.size():
+			break
+		var action = _current_bind_actions[i]
+		var keycode = binds.get(action, _default_key(action))
+		_bind_labels[i].text = _key_name(keycode)
+		_bind_labels[i].add_theme_color_override("font_color", Color.WHITE)
 
 func _get_panel_at(pos: Vector2) -> String:
 	if pos.x >= 240 and pos.x <= 600 and pos.y >= 370 and pos.y <= 600:
@@ -151,6 +161,22 @@ func _get_panel_at(pos: Vector2) -> String:
 	if pos.x >= 680 and pos.x <= 1040 and pos.y >= 370 and pos.y <= 600:
 		return "wasd"
 	return ""
+
+func _update_preset_labels():
+	var binds = AudioManager._read_settings().get("keybinds", {})
+	var k = func(action: String) -> String:
+		return _key_name(binds.get(action, _default_key(action)))
+	var click_text = "Move:           Right-click\nAttack target:  Right-click on enemy\n"
+	click_text += "Skill 1:        %s\nSkill 2:        %s\n" % [k.call("ability_q"), k.call("ability_w")]
+	click_text += "Items 1-6:      %s %s %s %s %s %s\n" % [k.call("item_1"), k.call("item_2"), k.call("item_3"), k.call("item_4"), k.call("item_5"), k.call("item_6")]
+	click_text += "Shop:           %s\nAttributes:     %s" % [k.call("shop"), k.call("attr")]
+	$ClickPanel/ClickList.text = click_text
+
+	var wasd_text = "Move:           W A S D\nAttack target:  Right-click on enemy\n"
+	wasd_text += "Skill 1:        %s\nSkill 2:        %s\n" % [k.call("ability_q"), k.call("ability_e")]
+	wasd_text += "Items 1-6:      %s %s %s %s %s %s\n" % [k.call("item_1"), k.call("item_2"), k.call("item_3"), k.call("item_4"), k.call("item_5"), k.call("item_6")]
+	wasd_text += "Shop:           %s\nAttributes:     %s" % [k.call("shop"), k.call("attr")]
+	$WASDPanel/WASDList.text = wasd_text
 
 func _highlight_panel(scheme: String):
 	var click_border = $ClickPanel/ClickBorder

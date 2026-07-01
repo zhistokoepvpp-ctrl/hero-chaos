@@ -439,4 +439,6 @@ func _on_phase_changed(new_phase: int):
 func _set_lives_label(lives: int):
 	if lives_label:
 		lives_label.visible = true
-		lives_label.text = "♥" * max(0, lives) + "♡" * max(0, Constants.STARTING_LIVES - max(0, lives))
+		lives_label.text = "♥♥" if lives >= 2 else ("♥♡" if lives == 1 else "♡♡")
+		lives_label.add_theme_font_size_override("font_size", 20)
+		lives_label.add_theme_color_override("font_color", Color(1, 0.3, 0.3, 1))
