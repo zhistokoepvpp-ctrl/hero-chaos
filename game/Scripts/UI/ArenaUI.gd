@@ -18,6 +18,8 @@ extends Control
 @onready var gold_label: Label = $GoldLabel
 @onready var wave_label: Label = $WaveLabel
 @onready var lives_label: Label = $LivesLabel
+@onready var hero_hp_bar: ColorRect = $ArenaView/Hero/HeroHpBar
+@onready var hero_hp_bg: ColorRect = $ArenaView/Hero/HeroHpBg
 @onready var notify_label: Label = $NotifyLabel
 @onready var inv_slots: Array = [
 	$InvBox/Slot0/Slot0Label,
@@ -290,6 +292,9 @@ func _update_hud(delta):
 	if _hero:
 		q_cooldown_bar.size.x = q_cooldown_bg.size.x * _hero.get_q_progress()
 		w_cooldown_bar.size.x = w_cooldown_bg.size.x * _hero.get_w_progress()
+	
+	var world_hp = clamp(_current_hp / _max_hp, 0, 1)
+	hero_hp_bar.size.x = hero_hp_bg.size.x * world_hp
 	
 	for i in range(6):
 		if i < p.inventory.size():
