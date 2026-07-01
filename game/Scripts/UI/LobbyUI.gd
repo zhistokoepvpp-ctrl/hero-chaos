@@ -70,7 +70,8 @@ func _update_player_list():
 	for pid in GameManager.players:
 		var p = GameManager.players[pid]
 		var label = Label.new()
-		label.text = "%s | %s | Lv.%d | %dg" % [p.player_name, HeroDatabase.get_hero(p.hero_type).name, p.level, p.gold]
+		var hearts = "♥♥" if p.lives == 2 else ("♥♡" if p.lives == 1 else "♡♡")
+		label.text = "%s | %s | Lv.%d | %dg | %s" % [p.player_name, HeroDatabase.get_hero(p.hero_type).name, p.level, p.gold, hearts]
 		player_list.add_child(label)
 
 func _on_ready_pressed():

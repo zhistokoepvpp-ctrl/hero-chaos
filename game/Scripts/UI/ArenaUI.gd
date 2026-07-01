@@ -17,6 +17,7 @@ extends Control
 @onready var w_cooldown_bg: ColorRect = $AbilityBox/WPanel/WCooldownBg
 @onready var gold_label: Label = $GoldLabel
 @onready var wave_label: Label = $WaveLabel
+@onready var lives_label: Label = $LivesLabel
 
 var _hero: HeroBase = null
 var _wave_manager: WaveManager = null
@@ -254,6 +255,10 @@ func _update_hud(delta):
 	level_label.text = "Lv.%d" % p.level
 	gold_label.text = "%dg" % p.gold
 	wave_label.text = "Wave %d" % GameManager.current_wave
+	match p.lives:
+		2: lives_label.text = "♥♥"
+		1: lives_label.text = "♥♡"
+		_: lives_label.text = "♡♡"
 	
 	var hp_ratio = clamp(_current_hp / _max_hp, 0.0, 1.0)
 	var mana_ratio = clamp(_current_mana / _max_mana, 0.0, 1.0)
