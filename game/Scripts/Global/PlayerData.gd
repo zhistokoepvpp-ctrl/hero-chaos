@@ -75,18 +75,53 @@ func remove_item(slot: int) -> bool:
 	inventory.remove_at(slot)
 	return true
 
+func has_item(item_id: int) -> bool:
+	return item_id in inventory
+
+func remove_item_by_id(item_id: int) -> bool:
+	var idx = inventory.find(item_id)
+	if idx >= 0:
+		inventory.remove_at(idx)
+		return true
+	return false
+
+func count_item(item_id: int) -> int:
+	var c = 0
+	for id in inventory:
+		if id == item_id:
+			c += 1
+	return c
+
+func get_item_effects() -> Dictionary:
+	var total = {}
+	for id in inventory:
+		var item = ItemDatabase.get_item(id)
+		if item.is_empty():
+			continue
+		for key in item.effects:
+			total[key] = total.get(key, 0) + item.effects[key]
+	return total
+
 func get_hp() -> float:
-	return Constants.BASE_HP + str_attr * Constants.HP_PER_STR
+	var base = Constants.BASE_HP + str_attr * Constants.HP_PER_STR
+	var eff = get_item_effects()
+	return base + eff.get("max_hp", 0)
 
 func get_mana() -> float:
-	return Constants.BASE_MANA + int_attr * Constants.MANA_PER_INT
+	var base = Constants.BASE_MANA + int_attr * Constants.MANA_PER_INT
+	var eff = get_item_effects()
+	return base + eff.get("max_mana", 0)
 
 func get_armor() -> float:
-	return agi_attr * Constants.ARMOR_PER_AGI
+	var base = agi_attr * Constants.ARMOR_PER_AGI
+	var eff = get_item_effects()
+	return base + eff.get("armor", 0)
 
 func get_atk_speed() -> float:
 	var data = HeroDatabase.get_hero(hero_type)
-	return data.base_aspd + agi_attr * Constants.ATK_SPD_PER_AGI
+	var base = data.base_aspd + agi_attr * Constants.ATK_SPD_PER_AGI
+	var eff = get_item_effects()
+	return base + eff.get("atk_speed", 0)
 
 func get_damage() -> int:
 	var data = HeroDatabase.get_hero(hero_type)
@@ -96,11 +131,13 @@ func get_damage() -> int:
 		Constants.AttrType.STR: primary_val = str_attr
 		Constants.AttrType.AGI: primary_val = agi_attr
 		Constants.AttrType.INT: primary_val = int_attr
-	return data.base_dmg + primary_val
+	var eff = get_item_effects()
+	return data.base_dmg + primary_val + eff.get("damage", 0)
 
 func get_speed() -> float:
 	var data = HeroDatabase.get_hero(hero_type)
-	return data.base_spd
+	var eff = get_item_effects()
+	return data.base_spd + eff.get("speed", 0)
 
 func get_primary_value() -> int:
 	var data = HeroDatabase.get_hero(hero_type)

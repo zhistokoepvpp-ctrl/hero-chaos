@@ -18,6 +18,14 @@ extends Control
 @onready var gold_label: Label = $GoldLabel
 @onready var wave_label: Label = $WaveLabel
 @onready var lives_label: Label = $LivesLabel
+@onready var inv_slots: Array = [
+	$InvBox/Slot0/Slot0Label,
+	$InvBox/Slot1/Slot1Label,
+	$InvBox/Slot2/Slot2Label,
+	$InvBox/Slot3/Slot3Label,
+	$InvBox/Slot4/Slot4Label,
+	$InvBox/Slot5/Slot5Label
+]
 
 var _hero: HeroBase = null
 var _wave_manager: WaveManager = null
@@ -268,6 +276,13 @@ func _update_hud(delta):
 	if _hero:
 		q_cooldown_bar.size.x = q_cooldown_bg.size.x * _hero.get_q_progress()
 		w_cooldown_bar.size.x = w_cooldown_bg.size.x * _hero.get_w_progress()
+	
+	for i in range(6):
+		if i < p.inventory.size():
+			var item = ItemDatabase.get_item(p.inventory[i])
+			inv_slots[i].text = item.get("name", "") if not item.is_empty() else ""
+		else:
+			inv_slots[i].text = ""
 
 func _set_attack_target(monster):
 	_clear_target_highlight()

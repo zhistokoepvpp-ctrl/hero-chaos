@@ -75,3 +75,132 @@ offset_top = 640
 offset_right = 740
 offset_bottom = 690
 text = "READY"
+
+[node name="ShopPanel" type="Panel" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 340
+offset_top = 60
+offset_right = 940
+offset_bottom = 660
+color = Color(0.1, 0.1, 0.15, 0.95)
+
+[node name="ShopTitle" type="Label" parent="ShopPanel"]
+layout_mode = 0
+offset_left = 20
+offset_top = 10
+offset_right = 580
+offset_bottom = 40
+text = "SHOP [B]"
+theme_override_font_sizes/font_size = 22
+
+[node name="ShopGold" type="Label" parent="ShopPanel"]
+layout_mode = 0
+offset_left = 440
+offset_top = 10
+offset_right = 560
+offset_bottom = 40
+text = "Gold: 0"
+horizontal_alignment = 2
+theme_override_font_sizes/font_size = 18
+
+[node name="ShopItemList" type="VBoxContainer" parent="ShopPanel"]
+layout_mode = 0
+offset_left = 20
+offset_top = 50
+offset_right = 560
+offset_bottom = 540
+
+[node name="ShopInvTitle" type="Label" parent="ShopPanel"]
+layout_mode = 0
+offset_left = 20
+offset_top = 540
+offset_right = 560
+offset_bottom = 560
+text = "Inventory (RClick to sell)"
+theme_override_font_sizes/font_size = 14
+
+[node name="ShopInvList" type="VBoxContainer" parent="ShopPanel"]
+layout_mode = 0
+offset_left = 20
+offset_top = 560
+offset_right = 560
+offset_bottom = 580
+
+[node name="AttrPanel" type="Panel" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 440
+offset_top = 200
+offset_right = 840
+offset_bottom = 520
+color = Color(0.1, 0.1, 0.15, 0.95)
+
+[node name="AttrTitle" type="Label" parent="AttrPanel"]
+layout_mode = 0
+offset_left = 20
+offset_top = 10
+offset_right = 380
+offset_bottom = 40
+text = "ATTRIBUTES [U]"
+theme_override_font_sizes/font_size = 22
+
+[node name="AttrPoints" type="Label" parent="AttrPanel"]
+layout_mode = 0
+offset_left = 20
+offset_top = 50
+offset_right = 380
+offset_bottom = 80
+text = "Free points: 0"
+theme_override_font_sizes/font_size = 18
+
+[node name="AttrStrLabel" type="Label" parent="AttrPanel"]
+layout_mode = 0
+offset_left = 20
+offset_top = 90
+offset_right = 180
+offset_bottom = 120
+text = "STR: 0"
+theme_override_font_sizes/font_size = 16
+
+[node name="AttrStrBtn" type="Button" parent="AttrPanel"]
+layout_mode = 0
+offset_left = 190
+offset_top = 90
+offset_right = 260
+offset_bottom = 120
+text = "+"
+
+[node name="AttrAgiLabel" type="Label" parent="AttrPanel"]
+layout_mode = 0
+offset_left = 20
+offset_top = 130
+offset_right = 180
+offset_bottom = 160
+text = "AGI: 0"
+theme_override_font_sizes/font_size = 16
+
+[node name="AttrAgiBtn" type="Button" parent="AttrPanel"]
+layout_mode = 0
+offset_left = 190
+offset_top = 130
+offset_right = 260
+offset_bottom = 160
+text = "+"
+
+[node name="AttrIntLabel" type="Label" parent="AttrPanel"]
+layout_mode = 0
+offset_left = 20
+offset_top = 170
+offset_right = 180
+offset_bottom = 200
+text = "INT: 0"
+theme_override_font_sizes/font_size = 16
+
+[node name="AttrIntBtn" type="Button" parent="AttrPanel"]
+layout_mode = 0
+offset_left = 190
+offset_top = 170
+offset_right = 260
+offset_bottom = 200
+text = "+"

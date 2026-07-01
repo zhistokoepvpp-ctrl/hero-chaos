@@ -44,11 +44,20 @@ func _process(delta: float):
 				_overtime_seconds += delta
 
 func start_lobby_phase():
+	_award_wave_bonus()
 	phase = Constants.GamePhase.LOBBY
 	_lobby_timer = Constants.LOBBY_TIME
 	_ready_players.clear()
 	_overtime_active = false
 	_register_local_player()
+
+func _award_wave_bonus():
+	for i in range(_wave_cleared_players.size()):
+		var pid = _wave_cleared_players[i]
+		var p = players.get(pid)
+		if p and p.alive:
+			var bonus = Constants.WAVE_BONUSES[i] if i < Constants.WAVE_BONUSES.size() else 10
+			p.add_gold(bonus)
 
 func start_wave_phase():
 	current_wave += 1

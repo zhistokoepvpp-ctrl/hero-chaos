@@ -168,3 +168,114 @@ offset_bottom = 70
 text = "Wave 1"
 horizontal_alignment = 1
 theme_override_font_sizes/font_size = 18
+
+[node name="InvBox" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 40
+offset_top = 620
+offset_right = 640
+offset_bottom = 660
+
+[node name="Slot0" type="Panel" parent="InvBox"]
+custom_minimum_size = Vector2i(60, 36)
+size = Vector2i(60, 36)
+color = Color(0.1, 0.1, 0.15, 0.8)
+
+[node name="Slot0Label" type="Label" parent="InvBox/Slot0"]
+layout_mode = 0
+offset_left = 2
+offset_top = 2
+offset_right = 58
+offset_bottom = 34
+text = ""
+theme_override_font_sizes/font_size = 10
+
+[node name="Slot1" type="Panel" parent="InvBox"]
+layout_mode = 0
+offset_left = 70
+offset_top = 0
+offset_right = 130
+offset_bottom = 36
+custom_minimum_size = Vector2i(60, 36)
+color = Color(0.1, 0.1, 0.15, 0.8)
+
+[node name="Slot1Label" type="Label" parent="InvBox/Slot1"]
+layout_mode = 0
+offset_left = 2
+offset_top = 2
+offset_right = 58
+offset_bottom = 34
+text = ""
+theme_override_font_sizes/font_size = 10
+
+[node name="Slot2" type="Panel" parent="InvBox"]
+layout_mode = 0
+offset_left = 140
+offset_top = 0
+offset_right = 200
+offset_bottom = 36
+custom_minimum_size = Vector2i(60, 36)
+color = Color(0.1, 0.1, 0.15, 0.8)
+
+[node name="Slot2Label" type="Label" parent="InvBox/Slot2"]
+layout_mode = 0
+offset_left = 2
+offset_top = 2
+offset_right = 58
+offset_bottom = 34
+text = ""
+theme_override_font_sizes/font_size = 10
+
+[node name="Slot3" type="Panel" parent="InvBox"]
+layout_mode = 0
+offset_left = 210
+offset_top = 0
+offset_right = 270
+offset_bottom = 36
+custom_minimum_size = Vector2i(60, 36)
+color = Color(0.1, 0.1, 0.15, 0.8)
+
+[node name="Slot3Label" type="Label" parent="InvBox/Slot3"]
+layout_mode = 0
+offset_left = 2
+offset_top = 2
+offset_right = 58
+offset_bottom = 34
+text = ""
+theme_override_font_sizes/font_size = 10
+
+[node name="Slot4" type="Panel" parent="InvBox"]
+layout_mode = 0
+offset_left = 280
+offset_top = 0
+offset_right = 340
+offset_bottom = 36
+custom_minimum_size = Vector2i(60, 36)
+color = Color(0.1, 0.1, 0.15, 0.8)
+
+[node name="Slot4Label" type="Label" parent="InvBox/Slot4"]
+layout_mode = 0
+offset_left = 2
+offset_top = 2
+offset_right = 58
+offset_bottom = 34
+text = ""
+theme_override_font_sizes/font_size = 10
+
+[node name="Slot5" type="Panel" parent="InvBox"]
+layout_mode = 0
+offset_left = 350
+offset_top = 0
+offset_right = 410
+offset_bottom = 36
+custom_minimum_size = Vector2i(60, 36)
+color = Color(0.1, 0.1, 0.15, 0.8)
+
+[node name="Slot5Label" type="Label" parent="InvBox/Slot5"]
+layout_mode = 0
+offset_left = 2
+offset_top = 2
+offset_right = 58
+offset_bottom = 34
+text = ""
+theme_override_font_sizes/font_size = 10
