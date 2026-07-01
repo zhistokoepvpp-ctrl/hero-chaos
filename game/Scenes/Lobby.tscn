@@ -32,6 +32,16 @@ size = Vector2i(8, 8)
 color = Color(0, 1, 0, 0.5)
 visible = false
 
+[node name="NotifyLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 340
+offset_top = 80
+offset_right = 940
+offset_bottom = 120
+text = ""
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 22
+
 [node name="TitleLabel" type="Label" parent="."]
 layout_mode = 0
 offset_left = 40

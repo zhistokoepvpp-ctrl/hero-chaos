@@ -18,6 +18,7 @@ extends Control
 @onready var gold_label: Label = $GoldLabel
 @onready var wave_label: Label = $WaveLabel
 @onready var lives_label: Label = $LivesLabel
+@onready var notify_label: Label = $NotifyLabel
 @onready var inv_slots: Array = [
 	$InvBox/Slot0/Slot0Label,
 	$InvBox/Slot1/Slot1Label,
@@ -111,6 +112,11 @@ func _on_hero_death():
 	if not p:
 		_ending = false; return
 	
+	notify_label.text = "You died! Respawn in %ds..." % Constants.RESPAWN_DELAY
+	await get_tree().create_timer(1.5).timeout
+	if is_inside_tree():
+		notify_label.text = ""
+	
 	p.alive = false
 	hero_rect.modulate = Color(0.3, 0.3, 0.3, 0.5)
 	set_process(false)
@@ -123,8 +129,15 @@ func _on_hero_death():
 	
 	p.lives -= 1
 	if p.lives < 0:
+		notify_label.text = "ELIMINATED!"
 		GameManager.check_game_over()
 		_ending = false; return
+	
+	if p.lives == 0:
+		notify_label.text = "Last chance! One more death and you're out."
+		await get_tree().create_timer(2.0).timeout
+		if is_inside_tree():
+			notify_label.text = ""
 	
 	p.alive = true
 	_current_hp = _max_hp
@@ -141,6 +154,7 @@ func _input(event):
 	if hit_monster:
 		_set_attack_target(hit_monster)
 		_is_moving = false
+		target_pos.visible = false
 		return
 	
 	_set_attack_target(null)

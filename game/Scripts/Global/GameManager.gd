@@ -24,6 +24,8 @@ var _overtime_seconds: float = 0.0
 
 var _ready_players: Array[int] = []
 var _wave_cleared_players: Array[int] = []
+var last_placement: int = 0
+var last_wave_bonus: int = 0
 
 func _ready():
 	phase = Constants.GamePhase.MAIN_MENU
@@ -58,6 +60,9 @@ func _award_wave_bonus():
 		if p and p.alive:
 			var bonus = Constants.WAVE_BONUSES[i] if i < Constants.WAVE_BONUSES.size() else 10
 			p.add_gold(bonus)
+			if pid == local_player_id:
+				last_placement = i + 1
+				last_wave_bonus = bonus
 
 func start_wave_phase():
 	current_wave += 1

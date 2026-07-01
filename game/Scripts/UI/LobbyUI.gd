@@ -25,6 +25,7 @@ extends Control
 @onready var attr_agi_btn: Button = $AttrPanel/AttrAgiBtn
 @onready var attr_int_btn: Button = $AttrPanel/AttrIntBtn
 
+@onready var notify_label: Label = $NotifyLabel
 @onready var lobby_inv_slots: Array = [
 	$LobbyInvBox/LSlot0/LSlot0Label,
 	$LobbyInvBox/LSlot1/LSlot1Label,
@@ -46,6 +47,17 @@ func _ready():
 	attr_agi_btn.pressed.connect(_add_agi)
 	attr_int_btn.pressed.connect(_add_int)
 	_spawn_hero()
+	_show_wave_result()
+
+func _show_wave_result():
+	if GameManager.current_wave > 0:
+		var p = GameManager.players.get(GameManager.local_player_id)
+		var bonus = GameManager.last_wave_bonus
+		var place = GameManager.last_placement
+		notify_label.text = "Wave %d cleared! Place #%d | +%dg bonus" % [GameManager.current_wave, place, bonus]
+		await get_tree().create_timer(5.0).timeout
+		if is_inside_tree():
+			notify_label.text = ""
 
 func _spawn_hero():
 	if not GameManager.players.has(GameManager.local_player_id):
