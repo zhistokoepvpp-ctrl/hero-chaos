@@ -26,28 +26,125 @@ extends Control
 @onready var attr_int_btn: Button = $AttrPanel/AttrIntBtn
 
 @onready var notify_label: Label = $NotifyLabel
-@onready var lobby_inv_slots: Array = [
-	$LobbyInvBox/LSlot0/LSlot0Label,
-	$LobbyInvBox/LSlot1/LSlot1Label,
-	$LobbyInvBox/LSlot2/LSlot2Label,
-	$LobbyInvBox/LSlot3/LSlot3Label,
-	$LobbyInvBox/LSlot4/LSlot4Label,
-	$LobbyInvBox/LSlot5/LSlot5Label
-]
+
+# Hotbar
+@onready var portrait_rect: ColorRect = $PortraitRect
+@onready var portrait_level: Label = $PortraitLevel
+@onready var lives_label: Label = $LivesLabel
+@onready var gold_label: Label = $GoldLabel
+@onready var hp_bar: ColorRect = $HpBar
+@onready var mana_bar: ColorRect = $ManaBar
+@onready var hp_bg: ColorRect = $HpBg
+@onready var mana_bg: ColorRect = $ManaBg
+@onready var q_label: Label = $AbilityBox/QPanel/QLabel
+@onready var w_label: Label = $AbilityBox/WPanel/WLabel
+@onready var q_cooldown_bar: ColorRect = $AbilityBox/QPanel/QCooldownBar
+@onready var w_cooldown_bar: ColorRect = $AbilityBox/WPanel/WCooldownBar
+
+var _inv_labels: Array[Label] = []
+var _stat_tooltip: Panel
+var _stat_tooltip_labels: Array[Label] = []
+var _stat_tooltip_visible: bool = false
 
 var is_ready: bool = false
 var _move_target: Vector2 = Vector2.ZERO
 var _is_moving: bool = false
 var _hero_speed: float = 300.0
+var _control_scheme: String = "click"
 
 func _ready():
+	_create_inv_slots()
+	_create_stat_tooltip()
+	portrait_rect.mouse_entered.connect(_show_stat_tooltip)
+	portrait_rect.mouse_exited.connect(_hide_stat_tooltip)
 	btn_ready.pressed.connect(_on_ready_pressed)
 	GameManager.phase_changed.connect(_on_phase_changed)
+	_control_scheme = AudioManager.get_setting("control_scheme", "click")
+	if lives_label:
+		lives_label.add_theme_color_override("font_color", Color.WHITE)
 	attr_str_btn.pressed.connect(_add_str)
 	attr_agi_btn.pressed.connect(_add_agi)
 	attr_int_btn.pressed.connect(_add_int)
+	var shop_btn = get_node("BtnShop")
+	if shop_btn:
+		shop_btn.pressed.connect(_toggle_shop)
 	_spawn_hero()
 	_show_wave_result()
+
+func _create_inv_slots():
+	var positions = [
+		Vector2(5, 620), Vector2(47, 620), Vector2(89, 620),
+		Vector2(5, 662), Vector2(47, 662), Vector2(89, 662)
+	]
+	for i in 6:
+		var slot = ColorRect.new()
+		slot.position = positions[i]
+		slot.size = Vector2(42, 42)
+		slot.color = Color(0.1, 0.1, 0.15, 0.8)
+		add_child(slot)
+		var label = Label.new()
+		label.position = Vector2(1, 1)
+		label.size = Vector2(40, 40)
+		label.add_theme_font_size_override("font_size", 10)
+		label.add_theme_color_override("font_color", Color.WHITE)
+		slot.add_child(label)
+		_inv_labels.append(label)
+
+func _create_stat_tooltip():
+	_stat_tooltip = Panel.new()
+	_stat_tooltip.position = Vector2(412, 610 - 280 - 5)
+	_stat_tooltip.size = Vector2(240, 280)
+	_stat_tooltip.visible = false
+	add_child(_stat_tooltip)
+	var vbox = VBoxContainer.new()
+	vbox.position = Vector2(8, 8)
+	vbox.size = Vector2(224, 264)
+	_stat_tooltip.add_child(vbox)
+	var stat_names = ["Level", "HP", "Mana", "HP Regen", "Damage", "Atk Speed", "Armor", "Speed", "STR", "AGI", "INT", "Gold", "Lives"]
+	for name in stat_names:
+		var lbl = Label.new()
+		lbl.text = name + ": --"
+		lbl.add_theme_font_size_override("font_size", 11)
+		lbl.add_theme_color_override("font_color", Color.WHITE)
+		vbox.add_child(lbl)
+		_stat_tooltip_labels.append(lbl)
+
+func _show_stat_tooltip():
+	_stat_tooltip_visible = true
+
+func _hide_stat_tooltip():
+	_stat_tooltip_visible = false
+	_stat_tooltip.visible = false
+
+func _update_stat_tooltip():
+	var p = GameManager.players.get(GameManager.local_player_id)
+	if not p:
+		return
+	var data = HeroDatabase.get_hero(p.hero_type)
+	var primary_str = ""
+	match data.get("primary", -1):
+		Constants.AttrType.STR: primary_str = "STR"
+		Constants.AttrType.AGI: primary_str = "AGI"
+		Constants.AttrType.INT: primary_str = "INT"
+		_: primary_str = "N/A"
+	var vals = [
+		"Level: %d" % p.level,
+		"HP: %.0f" % p.get_hp(),
+		"Mana: %.0f" % p.get_mana(),
+		"HP Regen: %.1f/sec" % p.get_hp_regen(),
+		"Damage: %d" % p.get_damage(),
+		"Atk Speed: %.2f" % p.get_atk_speed(),
+		"Armor: %.1f" % p.get_armor(),
+		"Speed: %.0f" % p.get_speed(),
+		"STR: %d %s" % [p.str_attr, "(Primary)" if primary_str == "STR" else ""],
+		"AGI: %d %s" % [p.agi_attr, "(Primary)" if primary_str == "AGI" else ""],
+		"INT: %d %s" % [p.int_attr, "(Primary)" if primary_str == "INT" else ""],
+		"Gold: %d" % p.gold,
+		"Lives: %s" % ("♥♥" if p.lives == 2 else ("♥♡" if p.lives == 1 else "♡♡"))
+	]
+	for i in vals.size():
+		_stat_tooltip_labels[i].text = vals[i]
+	_stat_tooltip.visible = true
 
 func _show_wave_result():
 	if GameManager.current_wave > 0:
@@ -65,6 +162,15 @@ func _spawn_hero():
 	var p = GameManager.players[GameManager.local_player_id]
 	hero_rect.color = _get_hero_color(p.hero_type)
 	hero_rect.position = Vector2(590, 310)
+	var h_type = p.hero_type
+	if portrait_rect:
+		portrait_rect.color = _get_hero_color(h_type)
+	var data = HeroDatabase.get_hero(h_type)
+	if data:
+		if q_label:
+			q_label.text = "[Q] " + data.get("q_name", "?")
+		if w_label:
+			w_label.text = "[W] " + data.get("w_name", "?")
 
 func _get_hero_color(h_type: int) -> Color:
 	match h_type:
@@ -81,12 +187,29 @@ func _get_hero_color(h_type: int) -> Color:
 	return Color(0.5, 0.5, 0.5)
 
 func _process(delta):
+	if not is_inside_tree():
+		return
 	if GameManager.phase == Constants.GamePhase.LOBBY:
 		var t = max(0, int(GameManager._lobby_timer))
-		timer_label.text = "%02d:%02d" % [t / 60, t % 60]
-		wave_label.text = "Wave: %d" % (GameManager.current_wave + 1)
+		if timer_label:
+			timer_label.text = "%02d:%02d" % [t / 60, t % 60]
+		if wave_label:
+			wave_label.text = "Wave: %d" % (GameManager.current_wave + 1)
 		_update_player_list()
 		_update_inv_slots()
+		_update_hotbar()
+		if _stat_tooltip_visible:
+			_update_stat_tooltip()
+	
+	if _control_scheme == "wasd":
+		var wasd = Vector2.ZERO
+		if Input.is_key_pressed(KEY_D): wasd.x += 1
+		if Input.is_key_pressed(KEY_A): wasd.x -= 1
+		if Input.is_key_pressed(KEY_S): wasd.y += 1
+		if Input.is_key_pressed(KEY_W): wasd.y -= 1
+		if wasd != Vector2.ZERO and not shop_panel.visible and not attr_panel.visible:
+			hero_rect.position += wasd.normalized() * _hero_speed * delta
+			target_pos.visible = false
 	
 	if _is_moving and not shop_panel.visible and not attr_panel.visible:
 		var dir = (_move_target - hero_rect.position)
@@ -103,9 +226,14 @@ func _input(event):
 		match event.keycode:
 			KEY_B: _toggle_shop()
 			KEY_U: _toggle_attr()
+		for i in 6:
+			if event.keycode == KEY_1 + i and i < _inv_labels.size():
+				_sell_item(i)
 		return
 	
 	if not (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed):
+		return
+	if _control_scheme == "wasd":
 		return
 	if shop_panel.visible or attr_panel.visible:
 		return
@@ -258,15 +386,21 @@ func _add_agi():
 
 func _update_inv_slots():
 	var p = GameManager.players.get(GameManager.local_player_id)
-	if not p:
-		for i in range(6):
-			lobby_inv_slots[i].text = ""
-		return
-	for i in range(6):
-		if i < p.inventory.size():
-			lobby_inv_slots[i].text = ItemDatabase.get_item_name(p.inventory[i])
+	for i in 6:
+		if p and i < p.inventory.size():
+			_inv_labels[i].text = ItemDatabase.get_item_name(p.inventory[i])
 		else:
-			lobby_inv_slots[i].text = ""
+			_inv_labels[i].text = ""
+
+func _update_hotbar():
+	var p = GameManager.players.get(GameManager.local_player_id)
+	if not p:
+		return
+	if portrait_level:
+		portrait_level.text = "Lv.%d" % p.level
+	if gold_label:
+		gold_label.text = "%dg" % p.gold
+	_set_lives_label(p.lives)
 
 func _add_int():
 	var p = GameManager.players.get(GameManager.local_player_id)
@@ -294,6 +428,15 @@ func _on_ready_pressed():
 
 func _on_phase_changed(new_phase: int):
 	if new_phase == Constants.GamePhase.WAVE:
-		get_tree().change_scene_to_file("res://Scenes/Arena.tscn")
+		var tree = get_tree()
+		if tree:
+			tree.call_deferred("change_scene_to_file", "res://Scenes/Arena.tscn")
 	if new_phase == Constants.GamePhase.DUEL:
-		get_tree().change_scene_to_file("res://Scenes/Duel.tscn")
+		var tree = get_tree()
+		if tree:
+			tree.call_deferred("change_scene_to_file", "res://Scenes/Duel.tscn")
+
+func _set_lives_label(lives: int):
+	if lives_label:
+		lives_label.visible = true
+		lives_label.text = "♥" * max(0, lives) + "♡" * max(0, Constants.STARTING_LIVES - max(0, lives))

@@ -94,7 +94,7 @@ func _confirm_selection():
 	p.setup_hero(_selected_type)
 	
 	GameManager.start_lobby_phase()
-	get_tree().change_scene_to_file("res://Scenes/Lobby.tscn")
+	get_tree().call_deferred("change_scene_to_file", "res://Scenes/Lobby.tscn")
 
 func _get_hero_color(h_type: int) -> Color:
 	match h_type:

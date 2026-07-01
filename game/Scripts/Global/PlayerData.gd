@@ -112,6 +112,11 @@ func get_mana() -> float:
 	var eff = get_item_effects()
 	return base + eff.get("max_mana", 0)
 
+func get_hp_regen() -> float:
+	var base = str_attr * Constants.HP_REGEN_PER_STR
+	var eff = get_item_effects()
+	return base + eff.get("hp_regen", 0)
+
 func get_armor() -> float:
 	var base = agi_attr * Constants.ARMOR_PER_AGI
 	var eff = get_item_effects()

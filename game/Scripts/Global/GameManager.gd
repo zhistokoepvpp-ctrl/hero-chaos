@@ -29,6 +29,24 @@ var last_wave_bonus: int = 0
 
 func _ready():
 	phase = Constants.GamePhase.MAIN_MENU
+	_init_input_actions()
+
+func _init_input_actions():
+	var defaults = {
+		"ability_q": KEY_Q,
+		"ability_w": KEY_W,
+		"ability_e": KEY_E,
+		"item_1": KEY_1, "item_2": KEY_2, "item_3": KEY_3,
+		"item_4": KEY_4, "item_5": KEY_5, "item_6": KEY_6,
+	}
+	var binds = AudioManager._read_settings().get("keybinds", {})
+	for action in defaults:
+		if not InputMap.has_action(action):
+			InputMap.add_action(action)
+			InputMap.action_erase_events(action)
+			var ev = InputEventKey.new()
+			ev.keycode = binds.get(action, defaults[action])
+			InputMap.action_add_event(action, ev)
 
 func _process(delta: float):
 	match phase:

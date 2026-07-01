@@ -113,10 +113,18 @@ func _get_monster_stats(type: String, wave: int) -> Dictionary:
 	var boss_div = 10.0 if "boss" in type else 1.0
 	var wave_div = wave / boss_div if "boss" in type else 1.0
 	
+	var ot_hp_mult = 1.0
+	var ot_dmg_mult = 1.0
+	var ot_spd_mult = 1.0
+	if GameManager._overtime_active:
+		ot_dmg_mult = 1.0 + GameManager._overtime_seconds * Constants.OVERTIME_DMG_PER_SEC * 2
+		ot_spd_mult = 1.0 + GameManager._overtime_seconds * Constants.OVERTIME_SPD_PER_SEC * 3
+		ot_hp_mult = 1.0 + GameManager._overtime_seconds * 0.015
+	
 	return {
-		"hp": (base_hp * scale_hp * wave_div) if "boss" in type else (base_hp * scale_hp),
-		"damage": (base_dmg * scale_dmg * wave_div) if "boss" in type else (base_dmg * scale_dmg),
-		"speed": base_spd,
+		"hp": ((base_hp * scale_hp * wave_div) if "boss" in type else (base_hp * scale_hp)) * ot_hp_mult,
+		"damage": ((base_dmg * scale_dmg * wave_div) if "boss" in type else (base_dmg * scale_dmg)) * ot_dmg_mult,
+		"speed": base_spd * ot_spd_mult,
 		"armor": base_arm,
 		"attack_range": atk_range,
 		"attack_cooldown": 1.0,
