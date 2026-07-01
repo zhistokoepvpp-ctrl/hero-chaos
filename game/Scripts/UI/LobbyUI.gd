@@ -68,6 +68,7 @@ func _ready():
 	var shop_btn = get_node("BtnShop")
 	if shop_btn:
 		shop_btn.pressed.connect(_toggle_shop)
+	_create_shop_tooltip()
 	_spawn_hero()
 	_show_wave_result()
 
@@ -264,6 +265,38 @@ func _input(event):
 
 # ─── Shop ───
 
+var _shop_tooltip: Panel
+var _shop_tooltip_label: Label
+
+func _create_shop_tooltip():
+	_shop_tooltip = Panel.new()
+	_shop_tooltip.visible = false
+	_shop_tooltip.size = Vector2(180, 120)
+	_shop_tooltip_label = Label.new()
+	_shop_tooltip_label.position = Vector2(8, 8)
+	_shop_tooltip_label.size = Vector2(164, 104)
+	_shop_tooltip_label.add_theme_color_override("font_color", Color.WHITE)
+	_shop_tooltip_label.add_theme_font_size_override("font_size", 12)
+	_shop_tooltip_label.autowrap_mode = TextServer.AUTOWRAP_WORD
+	_shop_tooltip_label.bbcode_enabled = true
+	_shop_tooltip.add_child(_shop_tooltip_label)
+	shop_panel.add_child(_shop_tooltip)
+
+func _show_shop_tooltip(item: Dictionary, id: int, card_rect: ColorRect):
+	if item.is_empty():
+		return
+	var text = "[b]%s[/b]\n" % item.get("name", "Item")
+	var eff = item.get("effects", {})
+	for k in eff:
+		text += "%s: %s\n" % [k, str(eff[k])]
+	text += "\nCost: %dg" % item.get("cost", 0)
+	_shop_tooltip_label.text = text
+	_shop_tooltip.position = card_rect.global_position + Vector2(card_rect.size.x + 10, 0)
+	_shop_tooltip.visible = true
+
+func _hide_shop_tooltip():
+	_shop_tooltip.visible = false
+
 func _toggle_shop():
 	shop_panel.visible = not shop_panel.visible
 	attr_panel.visible = false
@@ -275,6 +308,7 @@ func _refresh_shop():
 	if not p:
 		return
 	shop_gold.text = "Gold: %d" % p.gold
+	_hide_shop_tooltip()
 	
 	for child in shop_item_list.get_children():
 		child.queue_free()
@@ -283,27 +317,41 @@ func _refresh_shop():
 		var item = ItemDatabase.get_item(id)
 		if item.is_empty():
 			continue
-		var row = HBoxContainer.new()
+		var card = VBoxContainer.new()
+		card.custom_minimum_size = Vector2(120, 130)
+		card.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		
+		var card_rect = ColorRect.new()
+		card_rect.custom_minimum_size = Vector2(80, 80)
+		card_rect.size = Vector2(80, 80)
+		card_rect.color = _item_color(id)
+		card_rect.mouse_entered.connect(_show_shop_tooltip.bind(item, id, card_rect))
+		card_rect.mouse_exited.connect(_hide_shop_tooltip)
+		card.add_child(card_rect)
+		
 		var name_lbl = Label.new()
 		name_lbl.text = item.name
-		name_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		name_lbl.add_theme_font_size_override("font_size", 10)
+		name_lbl.add_theme_color_override("font_color", Color.WHITE)
+		name_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
+		name_lbl.custom_minimum_size.x = 110
+		card.add_child(name_lbl)
+		
 		var cost_lbl = Label.new()
 		cost_lbl.text = "%dg" % item.cost
-		cost_lbl.custom_minimum_size.x = 60
-		var effect_text = ""
-		for k in item.effects:
-			effect_text += "%s: %s " % [k, str(item.effects[k])]
-		var effect_lbl = Label.new()
-		effect_lbl.text = effect_text
-		effect_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		cost_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		cost_lbl.add_theme_font_size_override("font_size", 12)
+		cost_lbl.add_theme_color_override("font_color", Color(1, 0.8, 0.2))
+		card.add_child(cost_lbl)
+		
 		var buy_btn = Button.new()
 		buy_btn.text = "Buy"
+		buy_btn.custom_minimum_size.x = 80
 		buy_btn.pressed.connect(_buy_item.bind(id))
-		row.add_child(name_lbl)
-		row.add_child(effect_lbl)
-		row.add_child(cost_lbl)
-		row.add_child(buy_btn)
-		shop_item_list.add_child(row)
+		card.add_child(buy_btn)
+		
+		shop_item_list.add_child(card)
 	
 	for child in shop_inv_list.get_children():
 		child.queue_free()
@@ -323,6 +371,11 @@ func _refresh_shop():
 		row.add_child(name_lbl)
 		row.add_child(sell_btn)
 		shop_inv_list.add_child(row)
+
+func _item_color(id: int) -> Color:
+	var hues = [0.0, 0.6, 0.3, 0.8, 0.15, 0.45, 0.75, 0.9, 0.1, 0.5, 0.35, 0.65, 0.2, 0.7, 0.4]
+	var h = hues[(id - 1) % hues.size()]
+	return Color.from_hsv(h, 0.6, 0.3)
 
 func _buy_item(item_id: int):
 	var p = GameManager.players.get(GameManager.local_player_id)

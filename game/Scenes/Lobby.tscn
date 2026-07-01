@@ -122,12 +122,13 @@ text = "Gold: 0"
 horizontal_alignment = 2
 theme_override_font_sizes/font_size = 18
 
-[node name="ShopItemList" type="VBoxContainer" parent="ShopPanel"]
+[node name="ShopItemList" type="GridContainer" parent="ShopPanel"]
 layout_mode = 0
 offset_left = 20
 offset_top = 50
 offset_right = 560
 offset_bottom = 540
+columns = 4
 
 [node name="ShopInvTitle" type="Label" parent="ShopPanel"]
 layout_mode = 0
