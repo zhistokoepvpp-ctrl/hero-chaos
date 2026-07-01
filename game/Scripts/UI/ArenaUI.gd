@@ -55,9 +55,9 @@ func _ready():
 	portrait_rect.mouse_entered.connect(_show_stat_tooltip)
 	portrait_rect.mouse_exited.connect(_hide_stat_tooltip)
 	GameManager.phase_changed.connect(_on_phase_changed)
+	_control_scheme = AudioManager.get_setting("control_scheme", "click")
 	_spawn_hero()
 	_setup_wave_manager()
-	_control_scheme = AudioManager.get_setting("control_scheme", "click")
 	if lives_label:
 		lives_label.add_theme_color_override("font_color", Color.WHITE)
 
@@ -308,6 +308,9 @@ func _process(delta):
 		if Input.is_key_pressed(KEY_S): wasd.y += 1
 		if Input.is_key_pressed(KEY_W): wasd.y -= 1
 		if wasd != Vector2.ZERO:
+			if _attacking_target:
+				_set_attack_target(null)
+				_is_moving = false
 			hero_rect.position += wasd.normalized() * _hero_speed * delta
 			target_pos.visible = false
 			_wasd_moving = true
