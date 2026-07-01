@@ -295,3 +295,5 @@ func _on_ready_pressed():
 func _on_phase_changed(new_phase: int):
 	if new_phase == Constants.GamePhase.WAVE:
 		get_tree().change_scene_to_file("res://Scenes/Arena.tscn")
+	if new_phase == Constants.GamePhase.DUEL:
+		get_tree().change_scene_to_file("res://Scenes/Duel.tscn")

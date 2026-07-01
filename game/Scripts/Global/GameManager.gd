@@ -66,12 +66,42 @@ func _award_wave_bonus():
 
 func start_wave_phase():
 	current_wave += 1
-	_wave_timer = Constants.WAVE_TIME
 	_wave_cleared_players.clear()
-	_overtime_active = false
-	_overtime_seconds = 0.0
-	phase = Constants.GamePhase.WAVE
-	wave_started.emit(current_wave)
+	if current_wave % Constants.DUEL_INTERVAL == 0 and current_wave % Constants.BOSS_INTERVAL != 0:
+		_duel_pairs = _form_duel_pairs()
+		phase = Constants.GamePhase.DUEL
+		duel_started.emit(_duel_pairs)
+	else:
+		_wave_timer = Constants.WAVE_TIME
+		_overtime_active = false
+		_overtime_seconds = 0.0
+		phase = Constants.GamePhase.WAVE
+		wave_started.emit(current_wave)
+
+var _duel_pairs: Array = []
+var duel_opponent_hero_type: int = Constants.HeroType.WARRIOR
+
+func _form_duel_pairs() -> Array:
+	var sorted = get_players_sorted_by_gold()
+	var pairs = []
+	for i in range(0, sorted.size(), 2):
+		if i + 1 < sorted.size():
+			pairs.append([sorted[i].peer_id, sorted[i + 1].peer_id])
+		else:
+			pairs.append([sorted[i].peer_id, -1])
+	if pairs.size() > 0 and pairs[0].size() >= 2:
+		var opp = pairs[0][0] if pairs[0][1] == local_player_id else pairs[0][1]
+		if opp >= 0:
+			var opp_data = players.get(opp)
+			if opp_data:
+				duel_opponent_hero_type = opp_data.hero_type
+	return pairs
+
+func end_duel_phase(won: bool):
+	var p = players.get(local_player_id)
+	if p and won:
+		p.add_gold(Constants.DUEL_WINNER_GOLD)
+	start_lobby_phase()
 
 func on_player_ready(peer_id: int):
 	if peer_id not in _ready_players:
