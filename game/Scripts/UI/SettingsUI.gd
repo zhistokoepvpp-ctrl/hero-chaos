@@ -25,8 +25,13 @@ func _ready():
 		var json = JSON.parse_string(f.get_as_text())
 		if json is Dictionary:
 			$FullscreenCheck.button_pressed = json.get("fullscreen", false)
+			var saved_res = json.get("resolution", "")
+			for i in $ResolutionOption.item_count:
+				if $ResolutionOption.get_item_text(i) == saved_res:
+					$ResolutionOption.select(i)
+					break
 		f.close()
-	_apply_fullscreen()
+	GameManager._apply_window_settings()
 
 	var scheme = AudioManager.get_setting("control_scheme", "click")
 	_highlight_panel(scheme)
@@ -36,6 +41,7 @@ func _ready():
 	$SfxVolSlider.value_changed.connect(_on_sfx_vol_changed)
 	$MusicVolSlider.value_changed.connect(_on_music_vol_changed)
 	$FullscreenCheck.toggled.connect(_on_fullscreen_toggled)
+	$ResolutionOption.item_selected.connect(_on_resolution_selected)
 	$BtnCustomize.pressed.connect(_open_bind_panel)
 	$BindPanel/BtnCloseBind.pressed.connect(_close_bind_panel)
 	$BtnBack.pressed.connect(_on_back)
@@ -210,19 +216,20 @@ func _on_music_vol_changed(val: float):
 	AudioManager.set_bgm_volume(val / 100.0)
 
 func _on_fullscreen_toggled(toggled: bool):
-	_save_fullscreen(toggled)
-	_apply_fullscreen()
-
-func _save_fullscreen(val: bool):
 	var data = AudioManager._read_settings()
-	data["fullscreen"] = val
+	data["fullscreen"] = toggled
 	AudioManager._write_settings(data)
+	GameManager._apply_window_settings()
 
-func _apply_fullscreen():
-	if AudioManager.get_setting("fullscreen", false):
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+func _on_resolution_selected(idx: int):
+	var text = $ResolutionOption.get_item_text(idx)
+	var data = AudioManager._read_settings()
+	if text == "Auto":
+		data.erase("resolution")
 	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+		data["resolution"] = text
+	AudioManager._write_settings(data)
+	GameManager._apply_window_settings()
 
 func _on_back():
 	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")

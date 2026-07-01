@@ -140,6 +140,25 @@ offset_top = 300
 offset_right = 680
 offset_bottom = 330
 
+[node name="ResolutionLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 440
+offset_top = 340
+offset_right = 620
+offset_bottom = 370
+text = "Resolution:"
+theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+
+[node name="ResolutionOption" type="OptionButton" parent="."]
+layout_mode = 0
+offset_left = 640
+offset_top = 335
+offset_right = 780
+offset_bottom = 365
+items = "Auto\n1280x720\n1366x768\n1600x900\n1920x1080\n2560x1440\n3840x2160"
+selected = 0
+
 [node name="ClickPanel" type="ColorRect" parent="."]
 layout_mode = 0
 offset_left = 240

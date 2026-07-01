@@ -30,6 +30,30 @@ var last_wave_bonus: int = 0
 func _ready():
 	phase = Constants.GamePhase.MAIN_MENU
 	_init_input_actions()
+	_apply_window_settings()
+
+func _apply_window_settings():
+	var win = get_window()
+	win.content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+	win.content_scale_aspect = Window.CONTENT_SCALE_ASPECT_KEEP
+	win.content_scale_size = Vector2i(1280, 720)
+	var data = AudioManager._read_settings()
+	if data.get("fullscreen", false):
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		var res = data.get("resolution", "")
+		if res:
+			var parts = res.split("x")
+			if parts.size() == 2:
+				var w = parts[0].to_int()
+				var h = parts[1].to_int()
+				if w > 0 and h > 0:
+					win.size = Vector2i(w, h)
+		var screen = DisplayServer.screen_get_size()
+		win.size = Vector2i(
+			min(win.size.x, screen.x),
+			min(win.size.y, screen.y)
+		)
 
 func _init_input_actions():
 	var defaults = {
