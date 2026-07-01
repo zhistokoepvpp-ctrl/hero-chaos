@@ -178,9 +178,18 @@ func _setup_hero():
 	if portrait_rect:
 		portrait_rect.color = _get_hero_color(h_type)
 	if q_label:
-		q_label.text = "[Q] " + data.get("q_name", "?")
+		q_label.text = "[%s] %s" % [_action_key_name("ability_q"), data.get("q_name", "?")]
 	if w_label:
-		w_label.text = "[W] " + data.get("w_name", "?")
+		var w_action = "ability_e" if _control_scheme == "wasd" else "ability_w"
+		w_label.text = "[%s] %s" % [_action_key_name(w_action), data.get("w_name", "?")]
+
+func _action_key_name(action: String) -> String:
+	if not InputMap.has_action(action):
+		return "?"
+	var events = InputMap.action_get_events(action)
+	if events.size() > 0 and events[0] is InputEventKey:
+		return OS.get_keycode_string(events[0].keycode)
+	return "?"
 
 func _get_hero_color(h_type: int) -> Color:
 	match h_type:

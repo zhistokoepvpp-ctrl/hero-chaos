@@ -162,9 +162,18 @@ func _spawn_hero():
 		portrait_rect.color = _get_hero_portrait_color(h_type)
 	
 	if q_label:
-		q_label.text = "[Q] " + data.get("q_name", "?")
+		q_label.text = "[%s] %s" % [_action_key_name("ability_q"), data.get("q_name", "?")]
 	if w_label:
-		w_label.text = "[W] " + data.get("w_name", "?")
+		var w_action = "ability_e" if _control_scheme == "wasd" else "ability_w"
+		w_label.text = "[%s] %s" % [_action_key_name(w_action), data.get("w_name", "?")]
+
+func _action_key_name(action: String) -> String:
+	if not InputMap.has_action(action):
+		return "?"
+	var events = InputMap.action_get_events(action)
+	if events.size() > 0 and events[0] is InputEventKey:
+		return OS.get_keycode_string(events[0].keycode)
+	return "?"
 
 func _setup_wave_manager():
 	_wave_manager = WaveManager.new()
@@ -291,7 +300,7 @@ func _process(delta):
 		if Input.is_action_just_pressed("ability_w") and _hero:
 			_hero.ability_w()
 	
-		_wasd_moving = false
+	_wasd_moving = false
 	if _control_scheme == "wasd":
 		var wasd = Vector2.ZERO
 		if Input.is_key_pressed(KEY_D): wasd.x += 1
@@ -328,21 +337,22 @@ func _combat_tick(delta):
 	
 	_atk_cooldown -= delta
 	
-	if not _wasd_moving and _attacking_target and is_instance_valid(_attacking_target) and _attacking_target._alive:
-		_attacking_target_last_pos = _attacking_target.position
-		var dist = hero_rect.position.distance_to(_attacking_target_last_pos)
-		if dist > _atk_range:
-			var dir = (_attacking_target_last_pos - hero_rect.position).normalized()
-			hero_rect.position += dir * _hero_speed * delta
-		elif _atk_cooldown <= 0:
-			_atk_cooldown = 1.0 / _hero.player_data.get_atk_speed()
-			if _attacking_target.take_damage(_atk_damage):
-				p = GameManager.players[GameManager.local_player_id]
-				p.add_gold(_attacking_target.gold_reward)
-				p.add_xp(_attacking_target.xp_reward)
-				_max_hp = p.get_hp()
-				_max_mana = p.get_mana()
-				_set_attack_target(_find_nearest_monster())
+	if _attacking_target and is_instance_valid(_attacking_target) and _attacking_target._alive:
+		if not _wasd_moving:
+			_attacking_target_last_pos = _attacking_target.position
+			var dist = hero_rect.position.distance_to(_attacking_target_last_pos)
+			if dist > _atk_range:
+				var dir = (_attacking_target_last_pos - hero_rect.position).normalized()
+				hero_rect.position += dir * _hero_speed * delta
+			elif _atk_cooldown <= 0:
+				_atk_cooldown = 1.0 / _hero.player_data.get_atk_speed()
+				if _attacking_target.take_damage(_atk_damage):
+					p = GameManager.players[GameManager.local_player_id]
+					p.add_gold(_attacking_target.gold_reward)
+					p.add_xp(_attacking_target.xp_reward)
+					_max_hp = p.get_hp()
+					_max_mana = p.get_mana()
+					_set_attack_target(_find_nearest_monster())
 	else:
 		_attacking_target = null
 	

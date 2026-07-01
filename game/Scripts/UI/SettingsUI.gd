@@ -93,12 +93,8 @@ func _default_key(action: String) -> int:
 func _key_name(keycode: int) -> String:
 	if keycode <= 0:
 		return "?"
-	var names = {
-		KEY_Q: "Q", KEY_W: "W", KEY_E: "E", KEY_R: "R",
-		KEY_1: "1", KEY_2: "2", KEY_3: "3", KEY_4: "4", KEY_5: "5", KEY_6: "6",
-		KEY_B: "B", KEY_U: "U"
-	}
-	return names.get(keycode, "?")
+	var name = OS.get_keycode_string(keycode)
+	return name if name else "?"
 
 func _on_key_label_click(event, action: String, idx: int):
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
