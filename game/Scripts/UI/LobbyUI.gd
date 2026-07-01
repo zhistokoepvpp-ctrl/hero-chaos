@@ -12,7 +12,7 @@ extends Control
 # Shop
 @onready var shop_panel: Panel = $ShopPanel
 @onready var shop_gold: Label = $ShopPanel/ShopGold
-@onready var shop_item_list: VBoxContainer = $ShopPanel/ShopItemList
+@onready var shop_item_list: GridContainer = $ShopPanel/ShopItemList
 @onready var shop_inv_list: VBoxContainer = $ShopPanel/ShopInvList
 
 # Attributes
